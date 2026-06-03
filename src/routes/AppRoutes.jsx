@@ -49,9 +49,9 @@ export default function AppRoutes() {
           {/* Landing only — no sidebar, no navbar */}
           <Route path="/" element={<HomeRoute />} />
 
-          {/* Auth pages — with top navbar, no sidebar */}
-          <Route path="/login" element={<PublicRoute element={<><Navbar /><LoginPage /></>} />} />
-          <Route path="/register" element={<PublicRoute element={<><Navbar /><RegisterPage /></>} />} />
+          {/* Auth pages — full screen centered, no navbar/sidebar */}
+          <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
+          <Route path="/register" element={<PublicRoute element={<RegisterPage />} />} />
 
           {/* Everything else — sidebar layout */}
           <Route path="/sessions" element={<ProtectedRoute element={<DashboardLayout><SessionsPage /></DashboardLayout>} />} />

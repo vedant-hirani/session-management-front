@@ -4,6 +4,7 @@ import { useSessions } from '../../../hooks/useSessions'
 import SessionForm from '../components/SessionForm'
 import Spinner from '../../../components/ui/Spinner'
 import Button from '../../../components/ui/Button'
+import ConfirmModal from '../../../components/ui/ConfirmModal'
 import './CreateSession.css'
 
 export default function EditSession() {
@@ -15,6 +16,7 @@ export default function EditSession() {
   const [serverErrors, setServerErrors] = useState({})
   const [globalError, setGlobalError] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   useEffect(() => {
     const loadSession = async () => {
@@ -44,10 +46,8 @@ export default function EditSession() {
     }
   }
 
-  const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this session? This action cannot be undone.')) {
-      return
-    }
+  const handleDeleteConfirm = async () => {
+    setShowDeleteConfirm(false)
     try {
       setIsDeleting(true)
       await deleteSession(id)
@@ -70,19 +70,26 @@ export default function EditSession() {
     return (
       <div className="create-session-page">
         <div className="alert alert-error">{loadError}</div>
-        <Link to="/creator/sessions">
-          <Button>Back to Sessions</Button>
-        </Link>
+        <Link to="/creator/sessions"><Button>Back to Sessions</Button></Link>
       </div>
     )
   }
 
-  if (!session) {
-    return null
-  }
+  if (!session) return null
 
   return (
     <div className="create-session-page">
+      <ConfirmModal
+        isOpen={showDeleteConfirm}
+        title="Delete this session?"
+        message="This will soft-delete the session and cancel all confirmed bookings with refunds. This cannot be undone."
+        confirmLabel="Yes, Delete"
+        cancelLabel="Keep Session"
+        variant="danger"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
+
       <div className="page-header">
         <div className="page-header-left">
           <Link to="/creator/sessions" className="back-link">← Back to Sessions</Link>
@@ -91,7 +98,7 @@ export default function EditSession() {
         </div>
         <Button
           variant="danger"
-          onClick={handleDelete}
+          onClick={() => setShowDeleteConfirm(true)}
           isLoading={isDeleting}
           disabled={isLoading}
         >
@@ -99,9 +106,7 @@ export default function EditSession() {
         </Button>
       </div>
 
-      {globalError && (
-        <div className="alert alert-error">{globalError}</div>
-      )}
+      {globalError && <div className="alert alert-error">{globalError}</div>}
 
       <SessionForm
         initialData={session}

@@ -10,18 +10,20 @@
   --sidebar-border: #313244;
 }
 
-/* Sidebar */
+/* ── Sidebar — fixed to viewport so logout is ALWAYS visible ── */
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;            /* exact viewport height, never grows */
   width: var(--sidebar-width);
-  min-height: 100vh;
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
   display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
+  flex-direction: column;   /* header / user / nav(flex:1,scrolls) / footer */
   transition: width 0.25s ease;
-  position: relative;
   z-index: 100;
+  overflow: hidden;
 }
 
 .sidebar--collapsed {
@@ -36,6 +38,7 @@
   padding: 1.25rem 1rem;
   border-bottom: 1px solid var(--sidebar-border);
   min-height: 64px;
+  flex-shrink: 0;
 }
 
 .sidebar-brand {
@@ -85,6 +88,7 @@
   gap: 0.75rem;
   padding: 1rem;
   border-bottom: 1px solid var(--sidebar-border);
+  flex-shrink: 0;
 }
 
 .sidebar-avatar {
@@ -101,9 +105,7 @@
   flex-shrink: 0;
 }
 
-.sidebar-user-info {
-  overflow: hidden;
-}
+.sidebar-user-info { overflow: hidden; }
 
 .sidebar-user-name {
   font-size: 0.875rem;
@@ -136,17 +138,23 @@
   border: 1px solid rgba(137, 180, 250, 0.25);
 }
 
-/* Nav */
+/* Nav — takes remaining space, scrolls internally so logout stays pinned */
 .sidebar-nav {
   flex: 1;
+  min-height: 0;            /* critical: allows flex child to shrink below content height */
   padding: 0.75rem 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 2px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* Section label (Creator only) */
+.sidebar-nav::-webkit-scrollbar { width: 3px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 4px; }
+
+/* Section label */
 .sidebar-nav-section {
   font-size: 0.6875rem;
   font-weight: 700;
@@ -170,6 +178,7 @@
   transition: all 0.15s;
   white-space: nowrap;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .sidebar-nav-item:hover {
@@ -194,10 +203,11 @@
   text-overflow: ellipsis;
 }
 
-/* Footer */
+/* Footer — pinned to bottom, always visible */
 .sidebar-footer {
   padding: 0.75rem 0.5rem;
   border-top: 1px solid var(--sidebar-border);
+  flex-shrink: 0;           /* never squish */
 }
 
 .sidebar-logout-btn {
@@ -222,7 +232,7 @@
   color: #f38ba8;
 }
 
-/* Mobile */
+/* ── Mobile ── */
 .sidebar-mobile-toggle {
   display: none;
   position: fixed;
@@ -250,21 +260,12 @@
 }
 
 @media (max-width: 768px) {
-  .sidebar-mobile-toggle {
-    display: flex;
-  }
-
-  .sidebar-overlay {
-    display: block;
-  }
+  .sidebar-mobile-toggle { display: flex; }
+  .sidebar-overlay { display: block; }
 
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
     transform: translateX(-100%);
-    transition: transform 0.25s ease;
+    transition: transform 0.25s ease, width 0.25s ease;
   }
 
   .sidebar--mobile-open {

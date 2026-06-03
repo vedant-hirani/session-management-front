@@ -4,10 +4,19 @@
   background: #f8f9fa;
 }
 
+/* Push content right by the sidebar width so it isn't hidden behind the fixed sidebar */
 .dashboard-main {
   flex: 1;
-  overflow-y: auto;
+  margin-left: var(--sidebar-width, 240px);
   min-width: 0;
+  transition: margin-left 0.25s ease;
+  overflow-x: hidden;
+}
+
+/* When sidebar is collapsed, shrink the offset */
+.sidebar--collapsed ~ .dashboard-main,
+.dashboard-layout:has(.sidebar--collapsed) .dashboard-main {
+  margin-left: var(--sidebar-collapsed-width, 64px);
 }
 
 .dashboard-content {
@@ -16,8 +25,13 @@
 }
 
 @media (max-width: 768px) {
+  /* On mobile the sidebar slides in as overlay — no margin needed */
+  .dashboard-main {
+    margin-left: 0 !important;
+  }
+
   .dashboard-content {
     padding: 1rem;
-    padding-top: 4rem; /* space for mobile toggle button */
+    padding-top: 4rem; /* space for the hamburger toggle button */
   }
 }

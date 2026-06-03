@@ -4,32 +4,38 @@ import { useBookings } from '../../../hooks/useBookings'
 import Spinner from '../../../components/ui/Spinner'
 import Button from '../../../components/ui/Button'
 import BookingCard from '../components/BookingCard'
+import ConfirmModal from '../../../components/ui/ConfirmModal'
 import './MyBookingsPage.css'
 
 export default function MyBookingsPage() {
   const { bookings, isLoading, error, getMyBookings, cancelBooking } = useBookings()
-  const [filter, setFilter] = useState('all') // all | confirmed | cancelled
+  const [filter, setFilter] = useState('all')
   const [cancellingId, setCancellingId] = useState(null)
+  const [confirmId, setConfirmId] = useState(null)   // booking id pending confirm
   const [actionError, setActionError] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
 
-  useEffect(() => {
-    loadBookings()
-  }, [])
+  useEffect(() => { loadBookings() }, [])
 
   const loadBookings = async () => {
-    try {
-      await getMyBookings()
-    } catch (_) {}
+    try { await getMyBookings() } catch (_) {}
   }
 
-  const handleCancel = async (bookingId) => {
-    if (!confirm('Cancel this booking?')) return
+  // Step 1 — open modal
+  const handleCancelRequest = (bookingId) => {
+    setConfirmId(bookingId)
+  }
+
+  // Step 2 — user confirmed in modal
+  const handleCancelConfirm = async () => {
+    const bookingId = confirmId
+    setConfirmId(null)
     try {
       setActionError('')
+      setSuccessMsg('')
       setCancellingId(bookingId)
       await cancelBooking(bookingId)
-      setSuccessMsg('Booking cancelled successfully.')
+      setSuccessMsg('Booking cancelled and refund added to your wallet.')
       await loadBookings()
     } catch (err) {
       setActionError(err.response?.data?.detail || 'Failed to cancel booking.')
@@ -38,31 +44,35 @@ export default function MyBookingsPage() {
     }
   }
 
-  const filtered = bookings.filter((b) => {
-    if (filter === 'all') return true
-    return b.status === filter
-  })
+  const filtered = bookings.filter((b) =>
+    filter === 'all' ? true : b.status === filter
+  )
 
   return (
     <div className="bookings-page">
+      {/* UI Confirm Modal — no window.confirm */}
+      <ConfirmModal
+        isOpen={confirmId !== null}
+        title="Cancel this booking?"
+        message="Your booking will be cancelled and the amount will be refunded to your wallet."
+        confirmLabel="Yes, Cancel"
+        cancelLabel="Keep Booking"
+        variant="danger"
+        onConfirm={handleCancelConfirm}
+        onCancel={() => setConfirmId(null)}
+      />
+
       <div className="bookings-page-header">
         <div>
           <h1 className="bookings-title">My Bookings</h1>
           <p className="bookings-subtitle">View and manage your session bookings</p>
         </div>
-        <Link to="/sessions">
-          <Button>Browse Sessions</Button>
-        </Link>
+        <Link to="/sessions"><Button>Browse Sessions</Button></Link>
       </div>
 
-      {successMsg && (
-        <div className="alert alert-success">{successMsg}</div>
-      )}
-      {actionError && (
-        <div className="alert alert-error">{actionError}</div>
-      )}
+      {successMsg && <div className="alert alert-success">{successMsg}</div>}
+      {actionError && <div className="alert alert-error">{actionError}</div>}
 
-      {/* Filter tabs */}
       <div className="bookings-tabs">
         {['all', 'confirmed', 'cancelled'].map((tab) => (
           <button
@@ -94,9 +104,7 @@ export default function MyBookingsPage() {
           <div className="bookings-empty-state">
             <span className="empty-icon">📋</span>
             <p>{filter === 'all' ? "You haven't booked any sessions yet." : `No ${filter} bookings.`}</p>
-            {filter === 'all' && (
-              <Link to="/sessions"><Button>Browse Sessions</Button></Link>
-            )}
+            {filter === 'all' && <Link to="/sessions"><Button>Browse Sessions</Button></Link>}
           </div>
         ) : (
           <div className="bookings-list">
@@ -104,7 +112,7 @@ export default function MyBookingsPage() {
               <BookingCard
                 key={booking.id}
                 booking={booking}
-                onCancel={handleCancel}
+                onCancel={handleCancelRequest}
                 isCancelling={cancellingId === booking.id}
               />
             ))}
