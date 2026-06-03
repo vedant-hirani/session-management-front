@@ -1,0 +1,110 @@
+.sessions-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding-bottom: 2rem;
+}
+
+.sessions-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.sessions-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.25rem;
+}
+
+.sessions-header p {
+  margin: 0;
+  font-size: 1.125rem;
+  opacity: 0.9;
+}
+
+.sessions-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.sessions-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.sessions-loading p {
+  margin-top: 1rem;
+  color: #6b7280;
+}
+
+.sessions-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+
+.empty-subtitle {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.sessions-error-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  min-height: 300px;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.sessions-error-state h2 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.sessions-error-state p {
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
+}
+
+.sessions-warning {
+  background-color: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 640px) {
+  .sessions-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .sessions-grid {
+    grid-template-columns: 1fr;
+  }
+}

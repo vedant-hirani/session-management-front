@@ -1,0 +1,100 @@
+.bookings-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding-bottom: 2rem;
+}
+
+.bookings-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.bookings-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+.bookings-header p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.bookings-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bookings-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.bookings-loading p {
+  margin-top: 1rem;
+  color: #6b7280;
+}
+
+.bookings-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  background: white;
+  border-radius: 0.5rem;
+}
+
+.empty-subtitle {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.bookings-error-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  min-height: 400px;
+}
+
+.bookings-error-state .error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.bookings-error-state h2 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.bookings-error-state p {
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+  max-width: 400px;
+}
+
+.bookings-warning {
+  background-color: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  text-align: center;
+  margin-top: 2rem;
+}

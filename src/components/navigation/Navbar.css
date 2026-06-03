@@ -1,0 +1,135 @@
+.navbar {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navbar-brand:hover {
+  color: #764ba2;
+}
+
+.brand-icon {
+  font-size: 1.5rem;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.navbar-links a:hover {
+  color: #667eea;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-greeting {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.navbar-actions a {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    height: 60px;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .navbar-menu {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid #e5e7eb;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s;
+  }
+
+  .navbar-menu.open {
+    max-height: 500px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    padding: 1rem 0;
+  }
+
+  .navbar-links a {
+    padding: 0.75rem 1rem;
+    display: block;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .navbar-actions {
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    gap: 0.75rem;
+  }
+
+  .navbar-actions button {
+    width: 100%;
+  }
+}
