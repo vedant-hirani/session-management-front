@@ -7,6 +7,7 @@ import { PublicRoute } from './PublicRoute'
 import Navbar from '../components/navigation/Navbar'
 
 // Pages
+import LandingPage from '../features/landing/pages/LandingPage'
 import LoginPage from '../features/auth/pages/LoginPage'
 import SessionsPage from '../features/sessions/pages/SessionsPage'
 import SessionDetailPage from '../features/sessions/pages/SessionDetailPage'
@@ -26,8 +27,9 @@ export default function AppRoutes() {
         <Navbar />
         <Routes>
           {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
-          <Route path="/" element={<SessionsPage />} />
+          <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/sessions/:id" element={<SessionDetailPage />} />
 
           {/* Protected User Routes */}
