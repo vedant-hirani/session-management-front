@@ -5,15 +5,9 @@ import './LandingPage.css'
 
 export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
-  const [hoveredStat, setHoveredStat] = useState(null)
-  const [hoveredFeature, setHoveredFeature] = useState(null)
 
   useEffect(() => {
     setIsVisible(true)
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const features = [
@@ -143,8 +137,6 @@ export default function LandingPage() {
             <div
               key={idx}
               className="stat-card"
-              onMouseEnter={() => setHoveredStat(idx)}
-              onMouseLeave={() => setHoveredStat(null)}
             >
               <div className={`stat-gradient bg-gradient-to-r ${stat.color}`}></div>
               <div className="stat-content">
@@ -169,8 +161,6 @@ export default function LandingPage() {
               <div
                 key={idx}
                 className="feature-item"
-                onMouseEnter={() => setHoveredFeature(idx)}
-                onMouseLeave={() => setHoveredFeature(null)}
               >
                 <div className="feature-glow"></div>
                 <div className="feature-card-inner">
@@ -221,9 +211,9 @@ export default function LandingPage() {
               <p>Join thousands of learners and experts transforming careers every day</p>
             </div>
             <div className="proof-logos">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="logo-item">
-                  <div className="logo-placeholder">Brand {i}</div>
+              {['Google', 'Meta', 'Microsoft', 'Netflix', 'Stripe'].map((brand) => (
+                <div key={brand} className="logo-item">
+                  <div className="logo-placeholder">{brand}</div>
                 </div>
               ))}
             </div>

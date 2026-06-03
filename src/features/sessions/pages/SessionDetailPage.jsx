@@ -19,6 +19,7 @@ export default function SessionDetailPage() {
   const [session, setSession] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [bookingError, setBookingError] = useState(null)
 
   useEffect(() => {
     const loadSession = async () => {
@@ -34,7 +35,7 @@ export default function SessionDetailPage() {
     }
 
     loadSession()
-  }, [id])
+  }, [id, getSessionDetail])
 
   const handleBook = async () => {
     if (!isAuthenticated) {
@@ -43,10 +44,11 @@ export default function SessionDetailPage() {
     }
 
     try {
+      setBookingError(null)
       await bookSession(parseInt(id))
       navigate('/bookings')
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to book session')
+      setBookingError(err.response?.data?.detail || 'Failed to book session. Please try again.')
     }
   }
 
@@ -70,6 +72,9 @@ export default function SessionDetailPage() {
     )
   }
 
+  const isPast = new Date(session.scheduled_at) < new Date()
+  const isOwner = isAuthenticated && user && session.creator?.id === user.id
+
   return (
     <div className="session-detail">
       <div className="detail-container">
@@ -86,7 +91,12 @@ export default function SessionDetailPage() {
 
           <div className="detail-header">
             <h1>{session.title}</h1>
-            <Badge variant="primary">{session.status}</Badge>
+            <div className="detail-badges">
+              {isPast && <Badge variant="secondary">Past Session</Badge>}
+              {session.spots_remaining === 0 && <Badge variant="danger">Sold Out</Badge>}
+              {session.already_booked && <Badge variant="success">Booked ✓</Badge>}
+              <Badge variant="primary">{session.status}</Badge>
+            </div>
           </div>
 
           <div className="detail-creator">
@@ -137,22 +147,76 @@ export default function SessionDetailPage() {
 
         <div className="detail-sidebar">
           <div className="booking-card">
-          <div className="price">${session.price}</div>
+            <div className="price">${session.price}</div>
+            
+            {bookingError && <div className="booking-error-message">{bookingError}</div>}
+            
+            {(() => {
+              if (isOwner) {
+                return (
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    onClick={() => navigate(`/creator/sessions/${session.id}/edit`)}
+                    style={{ width: '100%' }}
+                  >
+                    Your Session (Edit)
+                  </Button>
+                )
+              }
+              
+              if (session.already_booked) {
+                return (
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    onClick={() => navigate('/bookings')}
+                    style={{ width: '100%' }}
+                  >
+                    Already Booked ✓
+                  </Button>
+                )
+              }
+
+              if (isPast) {
+                return (
+                  <Button disabled size="lg" style={{ width: '100%' }}>
+                    Past Session
+                  </Button>
+                )
+              }
+
+              if (session.spots_remaining === 0) {
+                return (
+                  <Button disabled size="lg" style={{ width: '100%' }}>
+                    Sold Out
+                  </Button>
+                )
+              }
+
+              return (
+                <Button
+                  size="lg"
+                  onClick={handleBook}
+                  isLoading={bookingLoading}
+                  style={{ width: '100%' }}
+                >
+                  Book Now
+                </Button>
+              )
+            })()}
+
             {session.spots_remaining > 0 ? (
-              <Button
-                size="lg"
-                onClick={handleBook}
-                isLoading={bookingLoading}
-                style={{ width: '100%' }}
-              >
-                Book Now
-              </Button>
+              <p className={`spots-info ${session.spots_remaining <= 3 ? 'spots-urgency' : ''}`}>
+                {session.spots_remaining <= 3 ? (
+                  <span>⚠️ Only {session.spots_remaining} spots left!</span>
+                ) : (
+                  <span>{session.spots_remaining} spots remaining</span>
+                )}
+              </p>
             ) : (
-              <Button disabled size="lg" style={{ width: '100%' }}>
-                No Spots Available
-              </Button>
+              <p className="spots-info spots-soldout">This session is completely full</p>
             )}
-            <p className="spots-info">{session.spots_remaining} spots remaining</p>
           </div>
         </div>
       </div>

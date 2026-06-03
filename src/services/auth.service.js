@@ -26,7 +26,7 @@ const authService = {
         refresh: refreshToken,
       })
     } catch (error) {
-      console.error('Logout error:', error)
+      // Clean silent logout cleanup
     }
   },
 

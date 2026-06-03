@@ -21,7 +21,6 @@ export function AuthProvider({ children }) {
           setIsAuthenticated(true)
         }
       } catch (err) {
-        console.error('Auth initialization error:', err)
         clearTokens()
         setIsAuthenticated(false)
       } finally {
@@ -44,7 +43,6 @@ export function AuthProvider({ children }) {
       setIsAuthenticated(true)
       return profile
     } catch (err) {
-      console.error('Profile refresh error:', err)
       clearTokens()
       setUser(null)
       setIsAuthenticated(false)
@@ -100,7 +98,7 @@ export function AuthProvider({ children }) {
         await authService.logout(refreshToken)
       }
     } catch (err) {
-      console.error('Logout error:', err)
+      // Ignore logout API error on cleanup
     } finally {
       clearTokens()
       setUser(null)

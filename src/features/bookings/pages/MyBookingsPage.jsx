@@ -3,22 +3,26 @@ import { Link } from 'react-router-dom'
 import { useBookings } from '../../../hooks/useBookings'
 import Spinner from '../../../components/ui/Spinner'
 import Button from '../../../components/ui/Button'
+import Pagination from '../../../components/ui/Pagination'
 import BookingCard from '../components/BookingCard'
 import ConfirmModal from '../../../components/ui/ConfirmModal'
 import './MyBookingsPage.css'
 
 export default function MyBookingsPage() {
-  const { bookings, isLoading, error, getMyBookings, cancelBooking } = useBookings()
+  const { bookings, isLoading, error, getMyBookings, cancelBooking, pagination } = useBookings()
   const [filter, setFilter] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
   const [cancellingId, setCancellingId] = useState(null)
   const [confirmId, setConfirmId] = useState(null)   // booking id pending confirm
   const [actionError, setActionError] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
 
-  useEffect(() => { loadBookings() }, [])
+  useEffect(() => {
+    loadBookings(currentPage)
+  }, [currentPage])
 
-  const loadBookings = async () => {
-    try { await getMyBookings() } catch (_) {}
+  const loadBookings = async (page = currentPage) => {
+    try { await getMyBookings({ page }) } catch (_) {}
   }
 
   // Step 1 — open modal
@@ -117,6 +121,14 @@ export default function MyBookingsPage() {
               />
             ))}
           </div>
+        )}
+
+        {pagination && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.total_pages}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </div>

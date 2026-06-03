@@ -2,21 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { useSessions } from '../../../hooks/useSessions'
 import { useDebounce } from '../../../hooks/useDebounce'
 import Spinner from '../../../components/ui/Spinner'
+import Pagination from '../../../components/ui/Pagination'
 import SessionCard from '../components/SessionCard'
 import SessionFilters from '../components/SessionFilters'
 import './SessionsPage.css'
 
 export default function SessionsPage() {
-  const { sessions, isLoading, error, listSessions } = useSessions()
+  const { sessions, isLoading, error, listSessions, pagination } = useSessions()
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const debouncedSearch = useDebounce(searchTerm, 500)
 
   useEffect(() => {
-    listSessions({ search: debouncedSearch })
+    setCurrentPage(1)
   }, [debouncedSearch])
 
+  useEffect(() => {
+    listSessions({ search: debouncedSearch, page: currentPage })
+  }, [debouncedSearch, currentPage, listSessions])
+
   const handleRetry = () => {
-    listSessions({ search: debouncedSearch })
+    listSessions({ search: debouncedSearch, page: currentPage })
   }
 
   return (
@@ -24,6 +30,11 @@ export default function SessionsPage() {
       <div className="sessions-header">
         <h1>Discover Sessions</h1>
         <p>Find amazing sessions from talented creators</p>
+        {!isLoading && pagination && (
+          <p className="results-count">
+            {pagination.count} {pagination.count === 1 ? 'session' : 'sessions'} found
+          </p>
+        )}
       </div>
 
       <div className="sessions-content">
@@ -54,6 +65,14 @@ export default function SessionsPage() {
               <SessionCard key={session.id} session={session} />
             ))}
           </div>
+        )}
+
+        {pagination && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.total_pages}
+            onPageChange={setCurrentPage}
+          />
         )}
         
         {error && sessions.length > 0 && (

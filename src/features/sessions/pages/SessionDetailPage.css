@@ -238,3 +238,45 @@
     height: 220px;
   }
 }
+
+.detail-badges {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.booking-error-message {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.spots-info.spots-urgency {
+  color: #ea580c;
+  font-weight: 600;
+  background-color: #fff7ed;
+  border: 1px solid #ffedd5;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+  width: 100%;
+}
+
+.spots-info.spots-soldout {
+  color: #dc2626;
+  font-weight: 600;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+  width: 100%;
+}

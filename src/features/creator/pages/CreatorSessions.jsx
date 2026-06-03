@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSessions } from '../../../hooks/useSessions'
 import Spinner from '../../../components/ui/Spinner'
 import Button from '../../../components/ui/Button'
 import Badge from '../../../components/ui/Badge'
+import Pagination from '../../../components/ui/Pagination'
 import { formatDate } from '../../../utils/formatDate'
 import './CreatorSessions.css'
 
 export default function CreatorSessions() {
-  const { sessions, isLoading, error, getMySessions } = useSessions()
+  const { sessions, isLoading, error, getMySessions, pagination } = useSessions()
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    getMySessions()
-  }, [])
+    getMySessions({ page: currentPage })
+  }, [currentPage, getMySessions])
 
   return (
     <div className="creator-sessions">
@@ -68,6 +70,14 @@ export default function CreatorSessions() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {pagination && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.total_pages}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </div>

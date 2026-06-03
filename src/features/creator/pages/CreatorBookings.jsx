@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useBookings } from '../../../hooks/useBookings'
 import Spinner from '../../../components/ui/Spinner'
+import Pagination from '../../../components/ui/Pagination'
 import { formatDate, formatDateTime } from '../../../utils/formatDate'
 import './CreatorBookings.css'
 
@@ -11,12 +12,13 @@ const STATUS_CONFIG = {
 }
 
 export default function CreatorBookings() {
-  const { bookings, isLoading, error, getCreatorBookings } = useBookings()
+  const { bookings, isLoading, error, getCreatorBookings, pagination } = useBookings()
   const [filter, setFilter] = useState('all')
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
-    getCreatorBookings()
-  }, [])
+    getCreatorBookings({ page: currentPage })
+  }, [currentPage, getCreatorBookings])
 
   const filtered = bookings.filter((b) => filter === 'all' || b.status === filter)
 
@@ -118,6 +120,14 @@ export default function CreatorBookings() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {pagination && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={pagination.total_pages}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </div>
