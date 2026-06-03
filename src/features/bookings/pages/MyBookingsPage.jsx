@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useBookings } from '../../../hooks/useBookings'
 import Spinner from '../../../components/ui/Spinner'
 import Button from '../../../components/ui/Button'
@@ -6,21 +7,75 @@ import BookingCard from '../components/BookingCard'
 import './MyBookingsPage.css'
 
 export default function MyBookingsPage() {
-  const { bookings, isLoading, error, getMyBookings } = useBookings()
+  const { bookings, isLoading, error, getMyBookings, cancelBooking } = useBookings()
+  const [filter, setFilter] = useState('all') // all | confirmed | cancelled
+  const [cancellingId, setCancellingId] = useState(null)
+  const [actionError, setActionError] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
 
   useEffect(() => {
-    getMyBookings()
+    loadBookings()
   }, [])
 
-  const handleRetry = () => {
-    getMyBookings()
+  const loadBookings = async () => {
+    try {
+      await getMyBookings()
+    } catch (_) {}
   }
+
+  const handleCancel = async (bookingId) => {
+    if (!confirm('Cancel this booking?')) return
+    try {
+      setActionError('')
+      setCancellingId(bookingId)
+      await cancelBooking(bookingId)
+      setSuccessMsg('Booking cancelled successfully.')
+      await loadBookings()
+    } catch (err) {
+      setActionError(err.response?.data?.detail || 'Failed to cancel booking.')
+    } finally {
+      setCancellingId(null)
+    }
+  }
+
+  const filtered = bookings.filter((b) => {
+    if (filter === 'all') return true
+    return b.status === filter
+  })
 
   return (
     <div className="bookings-page">
-      <div className="bookings-header">
-        <h1>My Bookings</h1>
-        <p>Manage your upcoming sessions</p>
+      <div className="bookings-page-header">
+        <div>
+          <h1 className="bookings-title">My Bookings</h1>
+          <p className="bookings-subtitle">View and manage your session bookings</p>
+        </div>
+        <Link to="/sessions">
+          <Button>Browse Sessions</Button>
+        </Link>
+      </div>
+
+      {successMsg && (
+        <div className="alert alert-success">{successMsg}</div>
+      )}
+      {actionError && (
+        <div className="alert alert-error">{actionError}</div>
+      )}
+
+      {/* Filter tabs */}
+      <div className="bookings-tabs">
+        {['all', 'confirmed', 'cancelled'].map((tab) => (
+          <button
+            key={tab}
+            className={`tab-btn ${filter === tab ? 'tab-btn--active' : ''}`}
+            onClick={() => setFilter(tab)}
+          >
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            <span className="tab-count">
+              {tab === 'all' ? bookings.length : bookings.filter((b) => b.status === tab).length}
+            </span>
+          </button>
+        ))}
       </div>
 
       <div className="bookings-content">
@@ -30,28 +85,29 @@ export default function MyBookingsPage() {
             <p>Loading your bookings...</p>
           </div>
         ) : error && !bookings.length ? (
-          <div className="bookings-error-state">
-            <div className="error-icon">⚠️</div>
-            <h2>Unable to Load Bookings</h2>
-            <p>We're having trouble connecting to our services. Please try again.</p>
-            <Button onClick={handleRetry}>Try Again</Button>
+          <div className="bookings-empty-state">
+            <span className="empty-icon">⚠️</span>
+            <p>Failed to load bookings.</p>
+            <Button onClick={loadBookings}>Try Again</Button>
           </div>
-        ) : bookings.length === 0 ? (
-          <div className="bookings-empty">
-            <p>You haven't booked any sessions yet</p>
-            <p className="empty-subtitle">Explore sessions to find and book experiences</p>
+        ) : filtered.length === 0 ? (
+          <div className="bookings-empty-state">
+            <span className="empty-icon">📋</span>
+            <p>{filter === 'all' ? "You haven't booked any sessions yet." : `No ${filter} bookings.`}</p>
+            {filter === 'all' && (
+              <Link to="/sessions"><Button>Browse Sessions</Button></Link>
+            )}
           </div>
         ) : (
           <div className="bookings-list">
-            {bookings.map((booking) => (
-              <BookingCard key={booking.id} booking={booking} />
+            {filtered.map((booking) => (
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                onCancel={handleCancel}
+                isCancelling={cancellingId === booking.id}
+              />
             ))}
-          </div>
-        )}
-        
-        {error && bookings.length > 0 && (
-          <div className="bookings-warning">
-            <p>Some bookings couldn't be loaded. Showing available bookings.</p>
           </div>
         )}
       </div>

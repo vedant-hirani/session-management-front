@@ -72,12 +72,18 @@ export default function SessionDetailPage() {
 
   return (
     <div className="session-detail">
-      <div className="detail-image">
-        <img src={session.cover_image} alt={session.title} />
-      </div>
-
       <div className="detail-container">
         <div className="detail-main">
+
+          {/* Image contained inside the card */}
+          <div className="detail-image">
+            {session.cover_image ? (
+              <img src={session.cover_image} alt={session.title} />
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', fontSize: '4rem' }}>🎓</div>
+            )}
+          </div>
+
           <div className="detail-header">
             <h1>{session.title}</h1>
             <Badge variant="primary">{session.status}</Badge>
@@ -131,7 +137,7 @@ export default function SessionDetailPage() {
 
         <div className="detail-sidebar">
           <div className="booking-card">
-            <div className="price">${session.price}</div>
+          <div className="price">${session.price}</div>
             {session.spots_remaining > 0 ? (
               <Button
                 size="lg"

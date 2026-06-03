@@ -1,60 +1,76 @@
-import React, { useState } from 'react'
-import { useBookings } from '../../../hooks/useBookings'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../../../components/ui/Button'
-import Badge from '../../../components/ui/Badge'
-import { formatDateTime } from '../../../utils/formatDate'
+import { formatDateTime, formatDate } from '../../../utils/formatDate'
 import './BookingCard.css'
 
-export default function BookingCard({ booking }) {
-  const { cancelBooking, isLoading } = useBookings()
-  const [error, setError] = useState(null)
+const STATUS_CONFIG = {
+  confirmed: { label: 'Confirmed', color: '#166534', bg: '#f0fdf4', border: '#bbf7d0' },
+  cancelled: { label: 'Cancelled', color: '#991b1b', bg: '#fef2f2', border: '#fecaca' },
+  completed: { label: 'Completed', color: '#1e40af', bg: '#eff6ff', border: '#bfdbfe' },
+}
 
-  const handleCancel = async () => {
-    try {
-      setError(null)
-      await cancelBooking(booking.id)
-      window.location.reload()
-    } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to cancel booking')
-    }
-  }
-
-  const statusVariant = {
-    confirmed: 'success',
-    cancelled: 'danger',
-    completed: 'primary',
-  }[booking.status] || 'primary'
+export default function BookingCard({ booking, onCancel, isCancelling }) {
+  const session = booking.session || {}
+  const status = STATUS_CONFIG[booking.status] || STATUS_CONFIG.confirmed
+  const isConfirmed = booking.status === 'confirmed'
 
   return (
     <div className="booking-card">
-      {error && <div className="booking-error">{error}</div>}
-      <div className="booking-content">
-        <h3>{booking.session?.title}</h3>
-        <div className="booking-details">
-          <div className="detail-item">
-            <span className="label">Scheduled:</span>
-            <span>{formatDateTime(booking.session?.scheduled_at)}</span>
+      {/* Image */}
+      <div className="booking-card-image">
+        {session.cover_image ? (
+          <img src={session.cover_image} alt={session.title} />
+        ) : (
+          <div className="booking-card-image-placeholder">🎓</div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="booking-card-body">
+        <div className="booking-card-top">
+          <div className="booking-card-info">
+            <h3 className="booking-session-title">
+              <Link to={`/sessions/${session.id}`}>{session.title || 'Session'}</Link>
+            </h3>
+            <div className="booking-meta">
+              {session.scheduled_at && (
+                <span className="booking-meta-item">📅 {formatDateTime(session.scheduled_at)}</span>
+              )}
+              {session.duration_minutes && (
+                <span className="booking-meta-item">⏱ {session.duration_minutes} min</span>
+              )}
+              {session.price && (
+                <span className="booking-meta-item">💰 ${session.price}</span>
+              )}
+            </div>
           </div>
-          <div className="detail-item">
-            <span className="label">Price:</span>
-            <span>${booking.session?.price}</span>
-          </div>
-          <div className="detail-item">
-            <span className="label">Status:</span>
-            <Badge variant={statusVariant}>{booking.status}</Badge>
+
+          <div
+            className="booking-status-badge"
+            style={{ color: status.color, background: status.bg, border: `1px solid ${status.border}` }}
+          >
+            {status.label}
           </div>
         </div>
+
+        <div className="booking-card-footer">
+          <span className="booking-booked-on">
+            Booked on {formatDate(booking.booked_at)}
+          </span>
+          {isConfirmed && onCancel && (
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => onCancel(booking.id)}
+              isLoading={isCancelling}
+              disabled={isCancelling}
+            >
+              Cancel Booking
+            </Button>
+          )}
+        </div>
       </div>
-      {booking.status === 'confirmed' && (
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={handleCancel}
-          isLoading={isLoading}
-        >
-          Cancel
-        </Button>
-      )}
     </div>
   )
 }

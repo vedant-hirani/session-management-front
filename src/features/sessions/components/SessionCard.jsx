@@ -5,12 +5,16 @@ import { formatDate } from '../../../utils/formatDate'
 import './SessionCard.css'
 
 export default function SessionCard({ session }) {
-  const initials = session.creator?.first_name?.charAt(0) || 'C'
+  const initials = session.creator?.first_name?.charAt(0) || session.creator?.username?.charAt(0) || 'C'
 
   return (
     <Link to={`/sessions/${session.id}`} className="session-card">
       <div className="session-image">
-        <img src={session.cover_image} alt={session.title} />
+        {session.cover_image ? (
+          <img src={session.cover_image} alt={session.title} />
+        ) : (
+          <div className="session-image-placeholder">🎓</div>
+        )}
         <div className="session-price">${session.price}</div>
       </div>
       <div className="session-content">

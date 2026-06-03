@@ -1,10 +1,14 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from '../store/AuthContext'
 import { ProtectedRoute } from './ProtectedRoute'
 import { CreatorRoute } from './CreatorRoute'
 import { PublicRoute } from './PublicRoute'
+import DashboardLayout from '../layouts/DashboardLayout'
 import Navbar from '../components/navigation/Navbar'
+import { useAuth } from '../hooks/useAuth'
+import { isCreator } from '../utils/roleHelpers'
+import Spinner from '../components/ui/Spinner'
 
 // Pages
 import LandingPage from '../features/landing/pages/LandingPage'
@@ -21,30 +25,47 @@ import CreateSession from '../features/creator/pages/CreateSession'
 import EditSession from '../features/creator/pages/EditSession'
 import ProfilePage from '../features/profile/pages/ProfilePage'
 
+// Smart root — show landing or redirect to dashboard
+function HomeRoute() {
+  const { isAuthenticated, isLoading, user } = useAuth()
+  if (isLoading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spinner />
+      </div>
+    )
+  }
+  if (isAuthenticated) {
+    return <Navigate to={isCreator(user) ? '/creator' : '/dashboard'} replace />
+  }
+  return <LandingPage />
+}
+
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Navbar />
         <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
-          <Route path="/register" element={<PublicRoute element={<RegisterPage />} />} />
-          <Route path="/sessions" element={<SessionsPage />} />
-          <Route path="/sessions/:id" element={<SessionDetailPage />} />
+          {/* Landing only — no sidebar, no navbar */}
+          <Route path="/" element={<HomeRoute />} />
 
-          {/* Protected User Routes */}
-          <Route path="/dashboard" element={<ProtectedRoute element={<DashboardHome />} />} />
-          <Route path="/bookings" element={<ProtectedRoute element={<MyBookingsPage />} />} />
-          <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
+          {/* Auth pages — with top navbar, no sidebar */}
+          <Route path="/login" element={<PublicRoute element={<><Navbar /><LoginPage /></>} />} />
+          <Route path="/register" element={<PublicRoute element={<><Navbar /><RegisterPage /></>} />} />
 
-          {/* Protected Creator Routes */}
-          <Route path="/creator" element={<CreatorRoute element={<CreatorDashboard />} />} />
-          <Route path="/creator/sessions" element={<CreatorRoute element={<CreatorSessions />} />} />
-          <Route path="/creator/bookings" element={<CreatorRoute element={<CreatorBookings />} />} />
-          <Route path="/creator/sessions/new" element={<CreatorRoute element={<CreateSession />} />} />
-          <Route path="/creator/sessions/:id/edit" element={<CreatorRoute element={<EditSession />} />} />
+          {/* Everything else — sidebar layout */}
+          <Route path="/sessions" element={<ProtectedRoute element={<DashboardLayout><SessionsPage /></DashboardLayout>} />} />
+          <Route path="/sessions/:id" element={<ProtectedRoute element={<DashboardLayout><SessionDetailPage /></DashboardLayout>} />} />
+          <Route path="/dashboard" element={<ProtectedRoute element={<DashboardLayout><DashboardHome /></DashboardLayout>} />} />
+          <Route path="/bookings" element={<ProtectedRoute element={<DashboardLayout><MyBookingsPage /></DashboardLayout>} />} />
+          <Route path="/profile" element={<ProtectedRoute element={<DashboardLayout><ProfilePage /></DashboardLayout>} />} />
+
+          {/* Creator routes — sidebar layout */}
+          <Route path="/creator" element={<CreatorRoute element={<DashboardLayout><CreatorDashboard /></DashboardLayout>} />} />
+          <Route path="/creator/sessions" element={<CreatorRoute element={<DashboardLayout><CreatorSessions /></DashboardLayout>} />} />
+          <Route path="/creator/bookings" element={<CreatorRoute element={<DashboardLayout><CreatorBookings /></DashboardLayout>} />} />
+          <Route path="/creator/sessions/new" element={<CreatorRoute element={<DashboardLayout><CreateSession /></DashboardLayout>} />} />
+          <Route path="/creator/sessions/:id/edit" element={<CreatorRoute element={<DashboardLayout><EditSession /></DashboardLayout>} />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

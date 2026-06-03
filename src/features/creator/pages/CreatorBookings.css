@@ -1,76 +1,220 @@
-.creator-bookings {
-  min-height: 100vh;
-  background-color: #f9fafb;
-  padding-bottom: 2rem;
+.creator-bookings-page {
+  max-width: 1100px;
 }
 
-.bookings-header {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+.cb-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
-.bookings-header h1 {
+.cb-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.cb-subtitle {
+  color: #6b7280;
   margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Stats */
+.cb-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cb-stat {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.cb-stat--confirmed {
+  border-left: 4px solid #22c55e;
+}
+
+.cb-stat--cancelled {
+  border-left: 4px solid #ef4444;
+}
+
+.cb-stat-value {
   font-size: 2rem;
-  color: #1f2937;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
 }
 
-.bookings-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+.cb-stat-label {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
-.bookings-table {
-  background: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* Tabs */
+.cb-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.cb-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cb-tab:hover { color: #374151; }
+
+.cb-tab--active {
+  color: #6366f1;
+  border-bottom-color: #6366f1;
+}
+
+.cb-tab-count {
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.cb-tab--active .cb-tab-count {
+  background: #eef2ff;
+  color: #6366f1;
+}
+
+/* Table */
+.cb-content { min-height: 300px; }
+
+.cb-table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
   overflow: auto;
 }
 
-table {
+.cb-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.875rem;
 }
 
-thead {
-  background-color: #f9fafb;
+.cb-table thead tr {
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-th {
-  padding: 1rem;
+.cb-table th {
+  padding: 0.875rem 1rem;
   text-align: left;
   font-weight: 600;
-  color: #1f2937;
-  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
-td {
+.cb-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
   color: #6b7280;
+  border-bottom: 1px solid #f3f4f6;
+  white-space: nowrap;
 }
 
-tr:hover {
-  background-color: #f9fafb;
+.cb-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-.loading,
-.empty,
-.error {
-  text-align: center;
-  padding: 2rem;
-  background: white;
-  border-radius: 0.5rem;
-  color: #6b7280;
-  min-height: 300px;
+.cb-table tbody tr:hover td {
+  background: #f9fafb;
+}
+
+.cb-td-session {
+  color: #111827 !important;
+  font-weight: 500;
+  max-width: 220px;
+  white-space: normal !important;
+}
+
+.cb-td-price {
+  font-weight: 600;
+  color: #111827 !important;
+}
+
+.cb-status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* States */
+.cb-loading {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 280px;
+  gap: 1rem;
+  color: #6b7280;
 }
 
-.error {
-  background-color: #fee2e2;
-  color: #991b1b;
+.cb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  gap: 0.75rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px dashed #e5e7eb;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.cb-empty-icon { font-size: 2.5rem; }
+
+.cb-retry {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  padding: 0;
+  font-size: inherit;
+}
+
+@media (max-width: 640px) {
+  .cb-stats { grid-template-columns: 1fr; }
 }

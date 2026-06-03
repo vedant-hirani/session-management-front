@@ -20,13 +20,24 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background-color: #e5e7eb;
+  background: linear-gradient(135deg, #667eea22, #764ba222);
+  flex-shrink: 0;
 }
 
 .session-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.session-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  background: #f3f4f6;
 }
 
 .session-price {
