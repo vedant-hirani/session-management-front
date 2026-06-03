@@ -4,7 +4,8 @@ import { useAuth } from '../../../hooks/useAuth'
 import Input from '../../../components/ui/Input'
 import './LoginPage.css'
 
-const GOOGLE_OAUTH_URL = 'http://127.0.0.1:8000/social/login/google-oauth2/'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000'
+const GOOGLE_OAUTH_URL = `${API_BASE_URL}/social/login/google-oauth2/`
 
 function GoogleIcon() {
   return (
