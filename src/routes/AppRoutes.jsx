@@ -9,6 +9,7 @@ import Navbar from '../components/navigation/Navbar'
 // Pages
 import LandingPage from '../features/landing/pages/LandingPage'
 import LoginPage from '../features/auth/pages/LoginPage'
+import RegisterPage from '../features/auth/pages/RegisterPage'
 import SessionsPage from '../features/sessions/pages/SessionsPage'
 import SessionDetailPage from '../features/sessions/pages/SessionDetailPage'
 import MyBookingsPage from '../features/bookings/pages/MyBookingsPage'
@@ -29,6 +30,7 @@ export default function AppRoutes() {
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
+          <Route path="/register" element={<PublicRoute element={<RegisterPage />} />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/sessions/:id" element={<SessionDetailPage />} />
 

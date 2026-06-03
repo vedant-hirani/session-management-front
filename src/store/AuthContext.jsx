@@ -52,6 +52,26 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  const register = useCallback(async (email, username, password, password2, role = 'user') => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await authService.register({ email, username, password, password2, role })
+      setTokens(data.access, data.refresh)
+      const profile = await authService.getProfile()
+      setUser(profile)
+      setIsAuthenticated(true)
+      return profile
+    } catch (err) {
+      const message = err.response?.data?.detail || err.response?.data?.email?.[0] || err.response?.data?.username?.[0] || err.response?.data?.password?.[0] || 'Registration failed'
+      setError(message)
+      setIsAuthenticated(false)
+      throw err
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   const logout = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -110,6 +130,7 @@ export function AuthProvider({ children }) {
     isLoading,
     error,
     login,
+    register,
     logout,
     updateProfile,
     switchRole,

@@ -9,6 +9,17 @@ const authService = {
     return response.data
   },
 
+  register: async ({ email, username, password, password2, role }) => {
+    const response = await axiosInstance.post('/auth/register/', {
+      email,
+      username,
+      password,
+      password2,
+      role,
+    })
+    return response.data
+  },
+
   logout: async (refreshToken) => {
     try {
       await axiosInstance.post('/auth/logout/', {

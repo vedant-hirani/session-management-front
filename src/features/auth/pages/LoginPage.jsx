@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
@@ -89,6 +89,12 @@ export default function LoginPage() {
             Test Accounts:<br />
             Creator: creator1 / creator123<br />
             User: testuser / user123
+          </p>
+          <p style={{ textAlign: 'center', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e5e7eb' }}>
+            Don't have an account?{' '}
+            <Link to="/register" style={{ color: '#667eea', fontWeight: '600' }}>
+              Sign up
+            </Link>
           </p>
         </div>
       </div>
