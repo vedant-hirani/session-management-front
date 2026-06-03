@@ -49,14 +49,15 @@ export default function RegisterPage() {
     }
 
     try {
-      await register(
+      const profile = await register(
         formData.email,
         formData.username,
         formData.password,
         formData.password2,
         formData.role
       )
-      navigate('/dashboard')
+      // Role is fixed at registration — route to the right dashboard
+      navigate(formData.role === 'creator' ? '/creator' : '/dashboard')
     } catch (err) {
       console.error('Register error:', err)
     }

@@ -105,25 +105,6 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const switchRole = useCallback(async (role) => {
-    try {
-      setIsLoading(true)
-      setError(null)
-      const data = await authService.switchRole(role)
-      if (data.access) {
-        setTokens(data.access, data.refresh)
-      }
-      setUser(data)
-      return data
-    } catch (err) {
-      const message = err.response?.data?.detail || 'Role switch failed'
-      setError(message)
-      throw err
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
   const value = {
     user,
     isAuthenticated,
@@ -133,7 +114,6 @@ export function AuthProvider({ children }) {
     register,
     logout,
     updateProfile,
-    switchRole,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

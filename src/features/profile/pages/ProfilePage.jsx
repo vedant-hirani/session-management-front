@@ -7,7 +7,7 @@ import { getRoleDisplay } from '../../../utils/roleHelpers'
 import './ProfilePage.css'
 
 export default function ProfilePage() {
-  const { user, updateProfile, switchRole, isLoading, logout } = useAuth()
+  const { user, updateProfile, isLoading, logout } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     first_name: '',
@@ -42,16 +42,6 @@ export default function ProfilePage() {
       setIsEditing(false)
     } catch (err) {
       setMessage({ type: 'error', text: 'Failed to update profile' })
-    }
-  }
-
-  const handleRoleSwitch = async () => {
-    try {
-      const newRole = user.role === 'creator' ? 'user' : 'creator'
-      await switchRole(newRole)
-      setMessage({ type: 'success', text: `Switched to ${newRole} role` })
-    } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to switch role' })
     }
   }
 
@@ -97,6 +87,10 @@ export default function ProfilePage() {
                 <span className="label">Bio</span>
                 <span className="value">{user.bio || 'Not set'}</span>
               </div>
+              <div className="profile-info-item">
+                <span className="label">Account Type</span>
+                <span className="value">{getRoleDisplay(user.role)}</span>
+              </div>
               <div className="profile-actions">
                 <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
               </div>
@@ -141,14 +135,6 @@ export default function ProfilePage() {
               </div>
             </form>
           )}
-        </div>
-
-        <div className="profile-card">
-          <h2>Role Settings</h2>
-          <p>Current role: {getRoleDisplay(user.role)}</p>
-          <Button onClick={handleRoleSwitch} isLoading={isLoading}>
-            Switch to {user.role === 'creator' ? 'User' : 'Creator'} Role
-          </Button>
         </div>
 
         <div className="profile-card danger">

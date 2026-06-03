@@ -40,13 +40,6 @@ const authService = {
     return response.data
   },
 
-  switchRole: async (role) => {
-    const response = await axiosInstance.post('/auth/profile/role/', {
-      role,
-    })
-    return response.data
-  },
-
   healthCheck: async () => {
     const response = await axiosInstance.get('/auth/health/')
     return response.data
