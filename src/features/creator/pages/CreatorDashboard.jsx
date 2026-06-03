@@ -7,16 +7,22 @@ import Spinner from '../../../components/ui/Spinner'
 import './CreatorDashboard.css'
 
 export default function CreatorDashboard() {
-  const { sessions, getMySessions, isLoading: sessionsLoading } = useSessions()
-  const { bookings, getCreatorBookings, isLoading: bookingsLoading } = useBookings()
+  const { sessions, getMySessions, isLoading: sessionsLoading, error: sessionsError } = useSessions()
+  const { bookings, getCreatorBookings, isLoading: bookingsLoading, error: bookingsError } = useBookings()
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     getMySessions()
     getCreatorBookings()
-  }, [])
+  }, [retryCount])
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1)
+  }
 
   const totalRevenue = sessions.reduce((sum, s) => sum + (parseFloat(s.price) * (s.max_attendees - s.spots_remaining)), 0)
   const isLoading = sessionsLoading || bookingsLoading
+  const hasError = (sessionsError || bookingsError) && !sessions.length && !bookings.length
 
   return (
     <div className="creator-dashboard">
@@ -27,6 +33,14 @@ export default function CreatorDashboard() {
       {isLoading ? (
         <div className="loading">
           <Spinner size="lg" />
+          <p>Loading your dashboard...</p>
+        </div>
+      ) : hasError ? (
+        <div className="dashboard-error-state">
+          <div className="error-icon">⚠️</div>
+          <h2>Unable to Load Dashboard</h2>
+          <p>We're having trouble connecting to our services. Please try again.</p>
+          <Button onClick={handleRetry}>Try Again</Button>
         </div>
       ) : (
         <div className="dashboard-content">

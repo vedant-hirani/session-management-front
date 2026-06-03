@@ -54,14 +54,17 @@ export default function SessionDetailPage() {
     return (
       <div className="detail-loading">
         <Spinner size="lg" />
+        <p>Loading session...</p>
       </div>
     )
   }
 
   if (error || !session) {
     return (
-      <div className="detail-error">
-        <p>{error || 'Session not found'}</p>
+      <div className="detail-error-state">
+        <div className="error-icon">⚠️</div>
+        <h2>Session Not Available</h2>
+        <p>We couldn&apos;t find this session. It may have been removed or is no longer available.</p>
         <Button onClick={() => navigate('/')}>Back to Sessions</Button>
       </div>
     )

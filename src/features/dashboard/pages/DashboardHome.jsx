@@ -1,18 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import { useBookings } from '../../../hooks/useBookings'
 import { isCreator } from '../../../utils/roleHelpers'
 import Button from '../../../components/ui/Button'
+import Spinner from '../../../components/ui/Spinner'
 import './DashboardHome.css'
 
 export default function DashboardHome() {
   const { user } = useAuth()
-  const { bookings, getActiveBookings } = useBookings()
+  const { bookings, isLoading, error, getActiveBookings } = useBookings()
+  const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
     getActiveBookings()
-  }, [])
+  }, [retryCount])
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1)
+  }
 
   return (
     <div className="dashboard-page">
@@ -29,8 +35,19 @@ export default function DashboardHome() {
       <div className="dashboard-content">
         {!isCreator(user) && (
           <div className="dashboard-section">
-            <h2>Your Active Bookings ({bookings.length})</h2>
-            {bookings.length === 0 ? (
+            <h2>Your Active Bookings</h2>
+            {isLoading ? (
+              <div className="dashboard-loading">
+                <Spinner size="md" />
+                <p>Loading your bookings...</p>
+              </div>
+            ) : error && !bookings.length ? (
+              <div className="dashboard-error-state">
+                <div className="error-icon">⚠️</div>
+                <p>Unable to load bookings</p>
+                <Button onClick={handleRetry} size="sm">Try Again</Button>
+              </div>
+            ) : bookings.length === 0 ? (
               <div className="empty-state">
                 <p>No active bookings</p>
                 <Link to="/">

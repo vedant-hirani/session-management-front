@@ -167,8 +167,7 @@
   text-align: center;
 }
 
-.detail-loading,
-.detail-error {
+.detail-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -177,8 +176,35 @@
   gap: 1rem;
 }
 
-.detail-error {
-  color: #991b1b;
+.detail-loading p {
+  color: #6b7280;
+}
+
+.detail-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.detail-error-state .error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.detail-error-state h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+}
+
+.detail-error-state p {
+  margin: 0 0 1.5rem 0;
+  color: #6b7280;
+  max-width: 400px;
 }
 
 @media (max-width: 768px) {

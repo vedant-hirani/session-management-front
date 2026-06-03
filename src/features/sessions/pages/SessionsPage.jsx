@@ -15,12 +15,8 @@ export default function SessionsPage() {
     listSessions({ search: debouncedSearch })
   }, [debouncedSearch])
 
-  if (error && !sessions.length) {
-    return (
-      <div className="sessions-error">
-        <p>Failed to load sessions: {error}</p>
-      </div>
-    )
+  const handleRetry = () => {
+    listSessions({ search: debouncedSearch })
   }
 
   return (
@@ -36,16 +32,33 @@ export default function SessionsPage() {
         {isLoading ? (
           <div className="sessions-loading">
             <Spinner size="lg" />
+            <p>Loading sessions...</p>
+          </div>
+        ) : error && !sessions.length ? (
+          <div className="sessions-error-state">
+            <div className="error-icon">⚠️</div>
+            <h2>Unable to Load Sessions</h2>
+            <p>We're having trouble connecting to our services. Please try again.</p>
+            <button onClick={handleRetry} className="btn btn-primary">
+              Try Again
+            </button>
           </div>
         ) : sessions.length === 0 ? (
           <div className="sessions-empty">
             <p>No sessions found</p>
+            {searchTerm && <p className="empty-subtitle">Try adjusting your search</p>}
           </div>
         ) : (
           <div className="sessions-grid">
             {sessions.map((session) => (
               <SessionCard key={session.id} session={session} />
             ))}
+          </div>
+        )}
+        
+        {error && sessions.length > 0 && (
+          <div className="sessions-warning">
+            <p>Some sessions couldn&apos;t be loaded. Showing available results.</p>
           </div>
         )}
       </div>

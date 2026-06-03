@@ -4,6 +4,7 @@ import { AuthProvider } from '../store/AuthContext'
 import { ProtectedRoute } from './ProtectedRoute'
 import { CreatorRoute } from './CreatorRoute'
 import { PublicRoute } from './PublicRoute'
+import Navbar from '../components/navigation/Navbar'
 
 // Pages
 import LoginPage from '../features/auth/pages/LoginPage'
@@ -22,6 +23,7 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <Navbar />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
