@@ -205,31 +205,44 @@
 
 /* Footer — pinned to bottom, always visible */
 .sidebar-footer {
-  padding: 0.75rem 0.5rem;
+  padding: 0.875rem 0.75rem;
   border-top: 1px solid var(--sidebar-border);
-  flex-shrink: 0;           /* never squish */
+  flex-shrink: 0;
 }
 
 .sidebar-logout-btn {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
-  background: none;
-  border: none;
-  color: var(--sidebar-muted);
-  font-size: 0.875rem;
-  font-weight: 500;
+  background: rgba(243, 139, 168, 0.08);
+  border: 1px solid rgba(243, 139, 168, 0.2);
+  color: #f38ba8;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   width: 100%;
   transition: all 0.15s;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
 .sidebar-logout-btn:hover {
-  background: rgba(243, 139, 168, 0.1);
-  color: #f38ba8;
+  background: rgba(243, 139, 168, 0.18);
+  border-color: rgba(243, 139, 168, 0.45);
+  color: #ff8faa;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(243, 139, 168, 0.15);
+}
+
+.sidebar-logout-btn:active {
+  transform: translateY(0);
+}
+
+.sidebar-logout-btn .sidebar-nav-icon {
+  font-size: 1rem;
 }
 
 /* ── Mobile ── */

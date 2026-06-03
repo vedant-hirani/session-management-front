@@ -14,6 +14,7 @@ import Spinner from '../components/ui/Spinner'
 import LandingPage from '../features/landing/pages/LandingPage'
 import LoginPage from '../features/auth/pages/LoginPage'
 import RegisterPage from '../features/auth/pages/RegisterPage'
+import OAuthCallback from '../features/auth/pages/OAuthCallback'
 import SessionsPage from '../features/sessions/pages/SessionsPage'
 import SessionDetailPage from '../features/sessions/pages/SessionDetailPage'
 import MyBookingsPage from '../features/bookings/pages/MyBookingsPage'
@@ -52,6 +53,8 @@ export default function AppRoutes() {
           {/* Auth pages — full screen centered, no navbar/sidebar */}
           <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
           <Route path="/register" element={<PublicRoute element={<RegisterPage />} />} />
+          {/* OAuth callback — handles tokens + new-user role setup */}
+          <Route path="/auth/callback" element={<OAuthCallback />} />
 
           {/* Everything else — sidebar layout */}
           <Route path="/sessions" element={<ProtectedRoute element={<DashboardLayout><SessionsPage /></DashboardLayout>} />} />

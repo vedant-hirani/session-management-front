@@ -32,6 +32,26 @@ export function AuthProvider({ children }) {
     initializeAuth()
   }, [])
 
+  /**
+   * Re-fetch the user profile and update context state.
+   * Call this after tokens have been set/refreshed externally
+   * (e.g. after OAuth callback or setup).
+   */
+  const refreshProfile = useCallback(async () => {
+    try {
+      const profile = await authService.getProfile()
+      setUser(profile)
+      setIsAuthenticated(true)
+      return profile
+    } catch (err) {
+      console.error('Profile refresh error:', err)
+      clearTokens()
+      setUser(null)
+      setIsAuthenticated(false)
+      throw err
+    }
+  }, [])
+
   const login = useCallback(async (username, password) => {
     try {
       setIsLoading(true)
@@ -114,7 +134,9 @@ export function AuthProvider({ children }) {
     register,
     logout,
     updateProfile,
+    refreshProfile,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
+

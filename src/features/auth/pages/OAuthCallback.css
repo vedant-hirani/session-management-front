@@ -1,0 +1,209 @@
+/* Fullscreen centered shell */
+.oauth-callback {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  padding: 1.5rem;
+}
+
+/* Loading / error card */
+.oauth-callback-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
+
+.oauth-callback-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.oauth-callback-msg {
+  color: #6b7280;
+  font-size: 0.9375rem;
+  margin-top: 1rem;
+}
+
+.oauth-back-btn {
+  margin-top: 1.5rem;
+  padding: 0.625rem 1.5rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Setup card */
+.oauth-setup-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+  animation: popIn 0.25s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.oauth-setup-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.oauth-setup-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.oauth-setup-header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 0.5rem;
+}
+
+.oauth-setup-header p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.oauth-setup-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.oauth-setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.oauth-setup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.oauth-setup-field label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.oauth-setup-field input[type='text'] {
+  padding: 0.625rem 0.75rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.oauth-setup-field input[type='text']:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+}
+
+.oauth-setup-field-error {
+  font-size: 0.8rem;
+  color: #dc2626;
+}
+
+/* Role radio cards */
+.oauth-role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.oauth-role-option {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.oauth-role-option input[type='radio'] {
+  display: none;
+}
+
+.oauth-role-option:hover {
+  border-color: #667eea;
+  background: #f5f3ff;
+}
+
+.oauth-role-option--selected {
+  border-color: #667eea;
+  background: #f5f3ff;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+}
+
+.oauth-role-option-content {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.oauth-role-icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.oauth-role-option-content strong {
+  display: block;
+  font-size: 0.9375rem;
+  color: #111827;
+}
+
+.oauth-role-option-content p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #6b7280;
+}
+
+.oauth-setup-submit {
+  width: 100%;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  margin-top: 0.25rem;
+}
+
+.oauth-setup-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+.oauth-setup-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.oauth-setup-note {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 1.25rem;
+}

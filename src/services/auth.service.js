@@ -40,6 +40,11 @@ const authService = {
     return response.data
   },
 
+  oauthSetup: async ({ username, role }) => {
+    const response = await axiosInstance.post('/auth/oauth/setup/', { username, role })
+    return response.data
+  },
+
   healthCheck: async () => {
     const response = await axiosInstance.get('/auth/health/')
     return response.data
