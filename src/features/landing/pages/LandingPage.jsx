@@ -1,163 +1,252 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../../components/ui/Button'
 import './LandingPage.css'
 
 export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false)
-  const [activeFeature, setActiveFeature] = useState(0)
+  const [scrollY, setScrollY] = useState(0)
+  const [hoveredStat, setHoveredStat] = useState(null)
+  const [hoveredFeature, setHoveredFeature] = useState(null)
 
   useEffect(() => {
     setIsVisible(true)
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const features = [
     {
-      icon: '🎓',
-      title: 'Expert Sessions',
-      description: 'Book one-on-one sessions with industry experts and mentors'
+      icon: '✨',
+      title: 'Expert Matching',
+      description: 'AI-powered algorithms connect you with mentors perfectly suited to your goals',
+      highlight: 'Real-time matching'
     },
     {
       icon: '⚡',
-      title: 'Flexible Scheduling',
-      description: 'Learn at your own pace with customizable session times'
+      title: 'Instant Booking',
+      description: 'Schedule sessions seamlessly with flexible time slots across all timezones',
+      highlight: 'Book in seconds'
     },
     {
-      icon: '💬',
-      title: 'Direct Interaction',
-      description: 'Connect directly with experienced professionals in your field'
+      icon: '🎯',
+      title: 'Progress Tracking',
+      description: 'Monitor your growth with detailed metrics, notes, and personalized insights',
+      highlight: 'Data-driven growth'
     },
     {
-      icon: '📈',
-      title: 'Track Progress',
-      description: 'Monitor your growth with detailed session history and notes'
+      icon: '🌍',
+      title: 'Global Community',
+      description: 'Access 500+ vetted experts and 15,000+ learners from around the world',
+      highlight: 'World-class network'
     }
   ]
 
   const stats = [
-    { label: 'Active Sessions', value: '2,500+' },
-    { label: 'Expert Creators', value: '500+' },
-    { label: 'Learners Worldwide', value: '15,000+' },
-    { label: 'Satisfaction Rate', value: '98%' }
+    { value: '2,500+', label: 'Active Sessions', color: 'from-indigo-500 to-purple-500' },
+    { value: '500+', label: 'Expert Creators', color: 'from-purple-500 to-pink-500' },
+    { value: '15K+', label: 'Learners', color: 'from-pink-500 to-red-500' },
+    { value: '4.9★', label: 'Avg Rating', color: 'from-blue-500 to-cyan-500' }
+  ]
+
+  const steps = [
+    { num: '01', title: 'Discover', description: 'Explore thousands of expert-led sessions tailored to your interests' },
+    { num: '02', title: 'Connect', description: 'Find mentors matching your learning style and professional goals' },
+    { num: '03', title: 'Learn', description: 'Book personalized sessions and start your transformation journey' },
+    { num: '04', title: 'Grow', description: 'Track progress and achieve your professional milestones' }
   ]
 
   return (
     <div className="landing-page">
+      {/* Background Elements */}
+      <div className="bg-grid"></div>
+      <div className="bg-gradient-1"></div>
+      <div className="bg-gradient-2"></div>
+
       {/* Hero Section */}
-      <section className={`hero ${isVisible ? 'visible' : ''}`}>
-        <div className="hero-content">
-          <div className="hero-text">
-            <h1 className="hero-title">Learn From Industry Experts</h1>
-            <p className="hero-subtitle">Book personalized sessions with experienced professionals and accelerate your growth</p>
-            <div className="hero-cta">
-              <Link to="/sessions">
-                <Button className="btn-primary-lg">Explore Sessions</Button>
-              </Link>
-              <Link to="/login">
-                <Button className="btn-secondary-lg">Get Started</Button>
-              </Link>
-            </div>
+      <section className={`hero-section ${isVisible ? 'loaded' : ''}`}>
+        <div className="hero-container">
+          {/* Animated Background */}
+          <div className="hero-bg">
+            <div className="mesh-gradient mesh-1"></div>
+            <div className="mesh-gradient mesh-2"></div>
+            <div className="mesh-gradient mesh-3"></div>
+            <div className="floating-element elem-1"></div>
+            <div className="floating-element elem-2"></div>
+            <div className="floating-element elem-3"></div>
           </div>
-          <div className="hero-visual">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-            <div className="visual-cards">
-              <div className="card-item card-1">
-                <div className="card-header">Expert Match</div>
-                <div className="card-stat">95%</div>
+
+          {/* Hero Content */}
+          <div className="hero-grid">
+            <div className="hero-text">
+              <div className="badge">✨ The Future of Learning</div>
+              <h1 className="hero-title">
+                Connect with <span className="gradient-text">industry experts</span> instantly
+              </h1>
+              <p className="hero-description">
+                Book personalized mentoring sessions with vetted professionals. Get expert guidance, accelerate your growth, and unlock your potential.
+              </p>
+              <div className="hero-cta-group">
+                <Link to="/sessions">
+                  <button className="cta-primary">
+                    Explore Sessions
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                      <path d="M7 10h6m0 0l-3-3m3 3l-3 3" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </Link>
+                <Link to="/login">
+                  <button className="cta-secondary">Get Started</button>
+                </Link>
               </div>
-              <div className="card-item card-2">
-                <div className="card-header">Session Quality</div>
-                <div className="card-stat">4.9★</div>
+              <div className="trust-badges">
+                <div className="badge-item">
+                  <span className="badge-icon">✓</span>
+                  <span>98% satisfaction rate</span>
+                </div>
+                <div className="badge-item">
+                  <span className="badge-icon">✓</span>
+                  <span>10,000+ bookings monthly</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Hero Visual */}
+            <div className="hero-visual">
+              <div className="visual-frame">
+                <div className="glass-card card-1">
+                  <div className="card-icon">👤</div>
+                  <div className="card-text">Expert Mentor</div>
+                  <div className="card-meta">Verified Professional</div>
+                </div>
+                <div className="glass-card card-2">
+                  <div className="card-icon">⭐</div>
+                  <div className="card-text">4.9 Rating</div>
+                  <div className="card-meta">1,200+ sessions</div>
+                </div>
+                <div className="glass-card card-3">
+                  <div className="card-icon">🎯</div>
+                  <div className="card-text">Instant Match</div>
+                  <div className="card-meta">AI Powered</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-grid">
+      {/* Stats Section - Integrated */}
+      <section className="stats-integrated">
+        <div className="stats-wrapper">
           {stats.map((stat, idx) => (
-            <div key={idx} className="stat-item">
-              <div className="stat-value">{stat.value}</div>
-              <div className="stat-label">{stat.label}</div>
+            <div
+              key={idx}
+              className="stat-card"
+              onMouseEnter={() => setHoveredStat(idx)}
+              onMouseLeave={() => setHoveredStat(null)}
+            >
+              <div className={`stat-gradient bg-gradient-to-r ${stat.color}`}></div>
+              <div className="stat-content">
+                <div className="stat-value">{stat.value}</div>
+                <div className="stat-label">{stat.label}</div>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="features-section">
-        <div className="features-header">
-          <h2>Why Choose Sessions Marketplace</h2>
-          <p>Everything you need to grow your skills</p>
-        </div>
+      {/* Features Section - Premium Grid */}
+      <section className="features-premium">
+        <div className="section-container">
+          <div className="section-header">
+            <h2>Why experts choose Sessions Marketplace</h2>
+            <p>Everything you need to teach, learn, and grow</p>
+          </div>
 
-        <div className="features-content">
-          <div className="features-list">
+          <div className="features-grid">
             {features.map((feature, idx) => (
               <div
                 key={idx}
-                className={`feature-card ${activeFeature === idx ? 'active' : ''}`}
-                onMouseEnter={() => setActiveFeature(idx)}
-                onClick={() => setActiveFeature(idx)}
+                className="feature-item"
+                onMouseEnter={() => setHoveredFeature(idx)}
+                onMouseLeave={() => setHoveredFeature(null)}
               >
-                <div className="feature-icon">{feature.icon}</div>
-                <h3>{feature.title}</h3>
-                <p>{feature.description}</p>
+                <div className="feature-glow"></div>
+                <div className="feature-card-inner">
+                  <div className="feature-header">
+                    <span className="feature-icon">{feature.icon}</span>
+                    <span className="feature-highlight">{feature.highlight}</span>
+                  </div>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.description}</p>
+                  <div className="feature-arrow">→</div>
+                </div>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="features-visual">
-            <div className="feature-graphic">
-              <div className="graphic-circle"></div>
-              <div className="graphic-text">
-                <h4>Curated for You</h4>
-                <p>Find sessions tailored to your learning goals and schedule</p>
+      {/* How It Works - Timeline */}
+      <section className="timeline-section">
+        <div className="section-container">
+          <div className="section-header">
+            <h2>Get started in minutes</h2>
+            <p>A seamless experience from discovery to transformation</p>
+          </div>
+
+          <div className="timeline-wrapper">
+            {steps.map((step, idx) => (
+              <div key={idx} className="timeline-item">
+                <div className="timeline-marker">
+                  <div className="marker-content">{step.num}</div>
+                </div>
+                <div className="timeline-card">
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof Section */}
+      <section className="proof-section">
+        <div className="section-container">
+          <div className="proof-content">
+            <div className="proof-text">
+              <h2>Trusted by professionals worldwide</h2>
+              <p>Join thousands of learners and experts transforming careers every day</p>
+            </div>
+            <div className="proof-logos">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="logo-item">
+                  <div className="logo-placeholder">Brand {i}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="how-section">
-        <h2>How It Works</h2>
-        <div className="steps-grid">
-          <div className="step-card">
-            <div className="step-number">1</div>
-            <h3>Browse Sessions</h3>
-            <p>Explore thousands of expert-led sessions across various topics</p>
+      {/* Final CTA */}
+      <section className="cta-final">
+        <div className="cta-gradient-bg"></div>
+        <div className="section-container">
+          <div className="cta-content">
+            <h2>Ready to transform your career?</h2>
+            <p>Start your journey with expert mentorship today</p>
+            <div className="cta-buttons">
+              <Link to="/sessions">
+                <button className="cta-primary-large">Browse Sessions</button>
+              </Link>
+              <Link to="/login">
+                <button className="cta-secondary-large">Create Account</button>
+              </Link>
+            </div>
           </div>
-          <div className="step-card">
-            <div className="step-number">2</div>
-            <h3>Pick Your Expert</h3>
-            <p>Find the perfect mentor matching your learning style</p>
-          </div>
-          <div className="step-card">
-            <div className="step-number">3</div>
-            <h3>Book & Learn</h3>
-            <p>Schedule your session and start your learning journey</p>
-          </div>
-          <div className="step-card">
-            <div className="step-number">4</div>
-            <h3>Grow & Succeed</h3>
-            <p>Track progress and achieve your professional goals</p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="cta-content">
-          <h2>Ready to Start Your Learning Journey?</h2>
-          <p>Join thousands of professionals already transforming their careers</p>
-          <Link to="/sessions">
-            <Button className="btn-primary-lg">Browse Sessions Now</Button>
-          </Link>
         </div>
       </section>
     </div>
