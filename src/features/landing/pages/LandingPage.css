@@ -21,6 +21,79 @@
   min-height: 100vh;
 }
 
+/* Navigation Header */
+.landing-navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: rgba(11, 12, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--b-border);
+  z-index: 1000;
+  padding: 16px 40px;
+  box-sizing: border-box;
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.logo-symbol {
+  font-size: 1.25rem;
+  color: var(--b-accent);
+}
+
+.logo-text {
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-btn-signin {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--b-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-btn-signin:hover {
+  color: var(--b-accent);
+}
+
+.nav-btn-register {
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: var(--b-accent);
+  color: white;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.nav-btn-register:hover {
+  background: #5254e0;
+}
+
 /* Toast Alert Style */
 .live-toast-alert {
   position: fixed;
@@ -1215,6 +1288,10 @@
 }
 
 @media (max-width: 768px) {
+  .landing-navbar {
+    padding: 12px 20px;
+  }
+
   .landing-section, .booking-hero, .conversion-footer {
     padding: 40px 20px;
   }

@@ -1,41 +1,62 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Badge from '../../../components/ui/Badge'
-import { formatDate } from '../../../utils/formatDate'
 import './SessionCard.css'
 
 export default function SessionCard({ session }) {
   const initials = session.creator?.first_name?.charAt(0) || session.creator?.username?.charAt(0) || 'C'
 
   return (
-    <Link to={`/sessions/${session.id}`} className="session-card">
-      <div className="session-image">
+    <div className="premium-session-card-v2">
+      {/* Thumbnail Banner */}
+      <div className="session-card-banner">
         {session.cover_image ? (
-          <img src={session.cover_image} alt={session.title} />
+          <img src={session.cover_image} alt={session.title} className="banner-img" />
         ) : (
-          <div className="session-image-placeholder">🎓</div>
+          <div className="banner-placeholder">🎓</div>
         )}
-        <div className="session-price">${session.price}</div>
+        <div className="category-tag-badge">{session.category || 'Tech'}</div>
+        <div className="price-tag-badge">${session.price}</div>
       </div>
-      <div className="session-content">
-        <h3 className="session-title">{session.title}</h3>
-        <div className="session-meta">
-          <div className="session-creator">
-            <div className="creator-initial">{initials}</div>
-            <span>{session.creator?.first_name || 'Creator'}</span>
+
+      {/* Main Content */}
+      <div className="session-card-body-v2">
+        <h3 className="session-card-title-v2">
+          <Link to={`/sessions/${session.id}`}>{session.title}</Link>
+        </h3>
+
+        {/* Creator Info Grid */}
+        <div className="session-creator-meta-grid">
+          <div className="creator-avatar-bubble-v2">
+            {session.creator?.avatar ? (
+              <img src={session.creator.avatar} alt="" />
+            ) : (
+              <span>{initials}</span>
+            )}
           </div>
-          <Badge variant="primary">{session.status}</Badge>
+          <div className="creator-cred-block">
+            <strong>{session.creator?.first_name || session.creator?.username || 'Expert Leader'}</strong>
+            <span>{session.creator?.role === 'creator' ? 'Verified Mentor' : 'Contributor'}</span>
+          </div>
         </div>
-        <p className="session-description">{session.description?.substring(0, 80)}...</p>
-        <div className="session-footer">
-          <div className="session-info">
-            <span>{session.duration_minutes} mins</span>
-            <span>•</span>
-            <span>{session.spots_remaining} spots left</span>
-          </div>
-          <span className="session-date">{formatDate(session.scheduled_at)}</span>
+
+        {/* Meta Stats row */}
+        <div className="session-stats-specs-row">
+          <span className="spec-pill-item">★ {session.rating || '4.9'}</span>
+          <span className="spec-pill-item">⏱ {session.duration_minutes || '60'} mins</span>
+          <span className="spec-pill-item">🔥 {session.spots_remaining} left</span>
+        </div>
+
+        {/* Credibility booking counter */}
+        <div className="session-credibility-bookings">
+          <span>🎯 {session.booking_count || '120'}+ successful sessions hosted</span>
         </div>
       </div>
-    </Link>
+
+      {/* CTA Buttons */}
+      <div className="session-card-footer-v2">
+        <Link to={`/sessions/${session.id}`} className="cta-btn-view-details">Details</Link>
+        <Link to={`/sessions/${session.id}`} className="cta-btn-book-now">Book Now →</Link>
+      </div>
+    </div>
   )
 }

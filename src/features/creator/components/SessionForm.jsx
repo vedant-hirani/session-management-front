@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
+import { useSessions } from '../../../hooks/useSessions'
 import './SessionForm.css'
 
 const DEFAULT_FORM = {
@@ -16,6 +17,11 @@ const DEFAULT_FORM = {
 }
 
 export default function SessionForm({ initialData = {}, onSubmit, isLoading, submitLabel = 'Save Session', serverErrors = {} }) {
+  const { uploadFile } = useSessions()
+  const fileInputRef = useRef(null)
+  const [uploadingFile, setUploadingFile] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+
   const [form, setForm] = useState({
     ...DEFAULT_FORM,
     ...initialData,
@@ -32,6 +38,26 @@ export default function SessionForm({ initialData = {}, onSubmit, isLoading, sub
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }))
+  }
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploadingFile(true)
+    setUploadError('')
+    try {
+      const response = await uploadFile(file)
+      setForm((prev) => ({ ...prev, cover_image: response.url }))
+    } catch (err) {
+      setUploadError(err.response?.data?.detail || 'Failed to upload image. Please try again.')
+    } finally {
+      setUploadingFile(false)
+    }
+  }
+
+  const triggerFileSelect = () => {
+    fileInputRef.current?.click()
   }
 
   const validate = () => {
@@ -109,19 +135,56 @@ export default function SessionForm({ initialData = {}, onSubmit, isLoading, sub
             )}
           </div>
 
-          <div className="form-field form-field--full">
-            <Input
-              label="Cover Image URL"
-              name="cover_image"
-              value={form.cover_image}
-              onChange={handleChange}
-              error={allErrors.cover_image}
-              placeholder="https://example.com/image.jpg (optional)"
-              disabled={isLoading}
-            />
+          <div className="form-field form-field--full cover-image-uploader-field">
+            <label className="input-label">Cover Image</label>
+            <div className="uploader-container">
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                accept="image/*"
+                style={{ display: 'none' }}
+                disabled={isLoading || uploadingFile}
+              />
+              <div className="uploader-actions">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={triggerFileSelect}
+                  isLoading={uploadingFile}
+                  disabled={isLoading || uploadingFile}
+                >
+                  {uploadingFile ? 'Uploading...' : 'Choose Local Image'}
+                </Button>
+                <span className="uploader-or">or</span>
+                <Input
+                  name="cover_image"
+                  value={form.cover_image}
+                  onChange={handleChange}
+                  error={allErrors.cover_image || uploadError}
+                  placeholder="Paste external image URL here"
+                  disabled={isLoading || uploadingFile}
+                  style={{ flexGrow: 1, marginBottom: 0 }}
+                />
+              </div>
+
+              {form.cover_image && (
+                <div className="uploader-preview">
+                  <img src={form.cover_image} alt="Session Cover Preview" />
+                  <button
+                    type="button"
+                    className="remove-preview-btn"
+                    onClick={() => setForm((prev) => ({ ...prev, cover_image: '' }))}
+                  >
+                    Remove Image
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
 
       <div className="form-section">
         <h3 className="form-section-title">Schedule & Capacity</h3>

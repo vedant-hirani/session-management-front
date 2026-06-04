@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import Input from '../../../components/ui/Input'
@@ -23,6 +23,33 @@ export default function LoginPage() {
   const { login, isLoading, error } = useAuth()
   const [formData, setFormData] = useState({ username: '', password: '' })
   const [formErrors, setFormErrors] = useState({})
+
+  // Showcase UI States
+  const [activeSlot, setActiveSlot] = useState('10:00 AM')
+  const [bookingStatus, setBookingStatus] = useState('Book')
+  const [countdownMinutes, setCountdownMinutes] = useState(14)
+  const [countdownSeconds, setCountdownSeconds] = useState(20)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdownSeconds((prevSec) => {
+        if (prevSec > 0) return prevSec - 1
+        setCountdownMinutes((prevMin) => {
+          if (prevMin > 0) return prevMin - 1
+          return 14 // Reset mock timer
+        })
+        return 59
+      })
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const handleMiniBook = () => {
+    setBookingStatus('Confirmed! ✓')
+    setTimeout(() => {
+      setBookingStatus('Book')
+    }, 3000)
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -49,31 +76,90 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
-      {/* ── Left branding panel ── */}
+      {/* ── Left branding panel with rich interactive showcase ── */}
       <div className="auth-left">
         <div className="auth-left-content">
           <div className="auth-left-logo">
-            <div className="auth-left-logo-icon">🎓</div>
-            <span className="auth-left-logo-name">Sessions Marketplace</span>
+            <span className="logo-symbol">◆</span>
+            <span className="auth-left-logo-name">Sessions</span>
           </div>
-          <h2 className="auth-left-tagline">
-            Learn from the<br /><span>best creators</span><br />in the world.
-          </h2>
-          <p className="auth-left-sub">
-            Discover live sessions, workshops, and mentorship from experts across every field.
-          </p>
-          <div className="auth-left-features">
-            <div className="auth-left-feature">
-              <div className="auth-left-feature-icon">🚀</div>
-              Book sessions instantly — no waiting
+
+          <div className="showcase-introduction">
+            <h2>The premier session infrastructure</h2>
+            <p>Experience the booking workspace in real-time. Direct channels, secure logs, native video rooms.</p>
+          </div>
+
+          {/* Interactive showcase card layout */}
+          <div className="auth-showcase-container">
+            {/* Widget 1: Creator Profile Card */}
+            <div className="showcase-card expert-card float-1">
+              <div className="card-header-mini">
+                <div className="avatar-circle-mini">💻</div>
+                <div className="expert-info-mini">
+                  <h4>Sarah Jenkins</h4>
+                  <span>Principal Architect, Google</span>
+                </div>
+              </div>
+              <div className="card-meta-mini">
+                <span className="rating-pill-mini">★ 4.9</span>
+                <span className="rate-pill-mini">$150/hr</span>
+              </div>
             </div>
-            <div className="auth-left-feature">
-              <div className="auth-left-feature-icon">💰</div>
-              Wallet-based refunds if sessions cancel
+
+            {/* Widget 2: Booking slot picker preview */}
+            <div className="showcase-card booking-picker-card float-2">
+              <div className="card-sec-title">Availability Slots</div>
+              <div className="slots-strip-mini">
+                {['09:00 AM', '10:00 AM', '02:30 PM'].map((slot) => (
+                  <button
+                    key={slot}
+                    className={`slot-chip-mini ${activeSlot === slot ? 'active' : ''}`}
+                    onClick={() => slot !== '09:00 AM' && setActiveSlot(slot)}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+              <button className="book-session-mini-btn" onClick={handleMiniBook}>
+                {bookingStatus === 'Book' ? `Book Session: ${activeSlot}` : bookingStatus}
+              </button>
             </div>
-            <div className="auth-left-feature">
-              <div className="auth-left-feature-icon">🎙</div>
-              Become a creator and host your own sessions
+
+            {/* Widget 3: Live countdown card */}
+            <div className="showcase-card upcoming-card float-3">
+              <div className="upcoming-top">
+                <span className="live-status-pill-mini">UPCOMING SESSION</span>
+                <span className="timer-countdown">
+                  {countdownMinutes}:{countdownSeconds < 10 ? `0${countdownSeconds}` : countdownSeconds}
+                </span>
+              </div>
+              <h4>System Scale Review</h4>
+              <p>with Marcus Sterling (Y-Combinator)</p>
+            </div>
+
+            {/* Widget 4: Stream activity alerts */}
+            <div className="showcase-card activity-feed-card">
+              <div className="card-sec-title">Activity Stream</div>
+              <div className="feed-item-mini">
+                <span className="feed-status-dot active"></span>
+                <span>Alex K. scheduled 1:1 Tech Consultation</span>
+              </div>
+              <div className="feed-item-mini">
+                <span className="feed-status-dot completed"></span>
+                <span>Julia R. completed rating for Elena Rostova</span>
+              </div>
+            </div>
+
+            {/* Widget 5: Dashboard preview analytics */}
+            <div className="showcase-card dashboard-preview-card">
+              <div className="mini-metric-col">
+                <span>Active Bookings</span>
+                <strong>14,290</strong>
+              </div>
+              <div className="mini-metric-col">
+                <span>Fulfillment Velocity</span>
+                <strong>98.4%</strong>
+              </div>
             </div>
           </div>
         </div>

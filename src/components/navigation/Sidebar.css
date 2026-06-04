@@ -15,12 +15,14 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;            /* exact viewport height, never grows */
+  height: 100vh;
+  /* exact viewport height, never grows */
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
   display: flex;
-  flex-direction: column;   /* header / user / nav(flex:1,scrolls) / footer */
+  flex-direction: column;
+  /* header / user / nav(flex:1,scrolls) / footer */
   transition: width 0.25s ease;
   z-index: 100;
   overflow: hidden;
@@ -105,7 +107,9 @@
   flex-shrink: 0;
 }
 
-.sidebar-user-info { overflow: hidden; }
+.sidebar-user-info {
+  overflow: hidden;
+}
 
 .sidebar-user-name {
   font-size: 0.875rem;
@@ -141,7 +145,8 @@
 /* Nav — takes remaining space, scrolls internally so logout stays pinned */
 .sidebar-nav {
   flex: 1;
-  min-height: 0;            /* critical: allows flex child to shrink below content height */
+  min-height: 0;
+  /* critical: allows flex child to shrink below content height */
   padding: 0.75rem 0.5rem;
   display: flex;
   flex-direction: column;
@@ -150,9 +155,18 @@
   overflow-x: hidden;
 }
 
-.sidebar-nav::-webkit-scrollbar { width: 3px; }
-.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
-.sidebar-nav::-webkit-scrollbar-thumb { background: var(--sidebar-border); border-radius: 4px; }
+.sidebar-nav::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--sidebar-border);
+  border-radius: 4px;
+}
 
 /* Section label */
 .sidebar-nav-section {
@@ -273,8 +287,13 @@
 }
 
 @media (max-width: 768px) {
-  .sidebar-mobile-toggle { display: flex; }
-  .sidebar-overlay { display: block; }
+  .sidebar-mobile-toggle {
+    display: flex;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
 
   .sidebar {
     transform: translateX(-100%);

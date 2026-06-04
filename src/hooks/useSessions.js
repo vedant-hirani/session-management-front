@@ -135,6 +135,21 @@ export function useSessions() {
     }
   }, [])
 
+  const uploadFile = useCallback(async (file) => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await sessionService.uploadFile(file)
+      return data
+    } catch (err) {
+      const message = err.response?.data?.detail || 'Failed to upload file'
+      setError(message)
+      throw err
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
   return {
     sessions,
     isLoading,
@@ -148,5 +163,7 @@ export function useSessions() {
     cancelSession,
     deleteSession,
     searchSessions,
+    uploadFile,
   }
 }
+

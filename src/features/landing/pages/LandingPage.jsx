@@ -85,6 +85,20 @@ export default function LandingPage() {
         </div>
       )}
 
+      {/* Navigation Header */}
+      <nav className="landing-navbar">
+        <div className="navbar-container">
+          <div className="navbar-logo">
+            <span className="logo-symbol">◆</span>
+            <span className="logo-text">Sessions</span>
+          </div>
+          <div className="navbar-actions">
+            <Link to="/login" className="nav-btn-signin">Sign In</Link>
+            <Link to="/register" className="nav-btn-register">Get Started</Link>
+          </div>
+        </div>
+      </nav>
+
       {/* SECTION 1: Immersive Hero Section & Booking Experience */}
       <header className="booking-hero">
         <div className="hero-mesh"></div>
