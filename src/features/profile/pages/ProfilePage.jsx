@@ -1,16 +1,38 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../../hooks/useAuth'
 import Button from '../../../components/ui/Button'
 import Input from '../../../components/ui/Input'
 import Badge from '../../../components/ui/Badge'
+import { useSessions } from '../../../hooks/useSessions'
 import { getRoleDisplay } from '../../../utils/roleHelpers'
 import './ProfilePage.css'
 
 export default function ProfilePage() {
   const { user, updateProfile, isLoading } = useAuth()
+  const { uploadFile } = useSessions()
+  const fileInputRef = useRef(null)
+  const [uploadingAvatar, setUploadingAvatar] = useState(false)
+  const [uploadError, setUploadError] = useState('')
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({ first_name: '', last_name: '', bio: '', avatar: '' })
+  const [formData, setFormData] = useState({ first_name: '', last_name: '', bio: '', avatar: '', company: '', headline: '' })
   const [message, setMessage] = useState(null)
+
+  const handleAvatarFileChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploadingAvatar(true)
+    setUploadError('')
+    try {
+      const response = await uploadFile(file)
+      setFormData((prev) => ({ ...prev, avatar: response.url }))
+    } catch (err) {
+      setUploadError(err.response?.data?.detail || 'Failed to upload avatar')
+    } finally {
+      setUploadingAvatar(false)
+    }
+  }
+
 
   useEffect(() => {
     if (user) {
@@ -19,6 +41,8 @@ export default function ProfilePage() {
         last_name: user.last_name || '',
         bio: user.bio || '',
         avatar: user.avatar || '',
+        company: user.company || '',
+        headline: user.headline || '',
       })
     }
   }, [user])
@@ -26,6 +50,7 @@ export default function ProfilePage() {
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    if (message) setMessage(null)
   }
 
   const handleUpdate = async (e) => {
@@ -67,6 +92,11 @@ export default function ProfilePage() {
             <div className="profile-identity">
               <h2>{user.first_name || user.username ? `${user.first_name} ${user.last_name || ''}` : 'User Profile'}</h2>
               <p className="profile-username">@{user.username}</p>
+              {user.role === 'creator' && user.headline && (
+                <p className="profile-headline-display">
+                  {user.headline} {user.company && <span>@ {user.company}</span>}
+                </p>
+              )}
               <p className="profile-joined">Joined on {new Date(user.date_joined || Date.now()).toLocaleDateString(undefined, { year: 'numeric', month: 'long' })}</p>
             </div>
           </div>
@@ -105,6 +135,18 @@ export default function ProfilePage() {
                   <span className="field-label">Last Name</span>
                   <span className="field-value">{user.last_name || <span className="placeholder-text">Not set</span>}</span>
                 </div>
+                {user.role === 'creator' && (
+                  <>
+                    <div className="profile-field-row">
+                      <span className="field-label">Headline</span>
+                      <span className="field-value">{user.headline || <span className="placeholder-text">Not set</span>}</span>
+                    </div>
+                    <div className="profile-field-row">
+                      <span className="field-label">Company</span>
+                      <span className="field-value">{user.company || <span className="placeholder-text">Not set</span>}</span>
+                    </div>
+                  </>
+                )}
                 <div className="profile-field-row">
                   <span className="field-label">About Bio</span>
                   <span className="field-value bio-text">{user.bio || <span className="placeholder-text">Tell us about yourself...</span>}</span>
@@ -116,8 +158,48 @@ export default function ProfilePage() {
                   <Input label="First Name" name="first_name" value={formData.first_name} onChange={handleChange} placeholder="e.g. John" />
                   <Input label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} placeholder="e.g. Doe" />
                 </div>
+                {user.role === 'creator' && (
+                  <div className="form-row">
+                    <Input label="Professional Headline" name="headline" value={formData.headline} onChange={handleChange} placeholder="e.g. Principal Architect" />
+                    <Input label="Company / Institution" name="company" value={formData.company} onChange={handleChange} placeholder="e.g. Google" />
+                  </div>
+                )}
                 <Input label="Bio" name="bio" value={formData.bio} onChange={handleChange} placeholder="Tell us about yourself" />
-                <Input label="Avatar Image URL" name="avatar" value={formData.avatar} onChange={handleChange} placeholder="https://example.com/avatar.jpg" />
+                
+                <div className="form-field cover-image-uploader-field">
+                  <label className="input-label">Avatar Image</label>
+                  <div className="uploader-container">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleAvatarFileChange}
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      disabled={isLoading || uploadingAvatar}
+                    />
+                    <div className="uploader-actions">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => fileInputRef.current?.click()}
+                        isLoading={uploadingAvatar}
+                        disabled={isLoading || uploadingAvatar}
+                      >
+                        {uploadingAvatar ? 'Uploading...' : 'Choose Local Avatar'}
+                      </Button>
+                      <span className="uploader-or">or</span>
+                      <Input
+                        name="avatar"
+                        value={formData.avatar || ''}
+                        onChange={handleChange}
+                        error={uploadError}
+                        placeholder="Paste image URL here"
+                        disabled={isLoading || uploadingAvatar}
+                        style={{ flexGrow: 1, marginBottom: 0 }}
+                      />
+                    </div>
+                  </div>
+                </div>
                 
                 <div className="form-actions-row">
                   <Button type="submit" isLoading={isLoading}>Save Details</Button>
@@ -126,6 +208,7 @@ export default function ProfilePage() {
               </form>
             )}
           </div>
+
 
           <div className="profile-sidebar-card">
             <div className="wallet-card-premium">

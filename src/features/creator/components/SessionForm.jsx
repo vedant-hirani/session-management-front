@@ -159,7 +159,7 @@ export default function SessionForm({ initialData = {}, onSubmit, isLoading, sub
                 <span className="uploader-or">or</span>
                 <Input
                   name="cover_image"
-                  value={form.cover_image}
+                  value={form.cover_image || ''}
                   onChange={handleChange}
                   error={allErrors.cover_image || uploadError}
                   placeholder="Paste external image URL here"
