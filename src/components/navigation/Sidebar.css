@@ -16,13 +16,12 @@
   top: 0;
   left: 0;
   height: 100vh;
-  /* exact viewport height, never grows */
+  height: 100dvh;
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
   color: var(--sidebar-text);
   display: flex;
   flex-direction: column;
-  /* header / user / nav(flex:1,scrolls) / footer */
   transition: width 0.25s ease;
   z-index: 1000;
   overflow: hidden;

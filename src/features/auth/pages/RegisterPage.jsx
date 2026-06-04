@@ -26,7 +26,6 @@ export default function RegisterPage() {
   })
   const [formErrors, setFormErrors] = useState({})
 
-  // Showcase UI States
   const [activeSlot, setActiveSlot] = useState('10:00 AM')
   const [bookingStatus, setBookingStatus] = useState('Book')
   const [countdownMinutes, setCountdownMinutes] = useState(14)
@@ -38,7 +37,7 @@ export default function RegisterPage() {
         if (prevSec > 0) return prevSec - 1
         setCountdownMinutes((prevMin) => {
           if (prevMin > 0) return prevMin - 1
-          return 14 // Reset mock timer
+          return 14
         })
         return 59
       })
@@ -82,7 +81,6 @@ export default function RegisterPage() {
 
   return (
     <div className="auth-page">
-      {/* ── Left branding panel with rich interactive showcase ── */}
       <div className="auth-left">
         <div className="auth-left-content">
           <div className="auth-left-logo">
@@ -95,9 +93,7 @@ export default function RegisterPage() {
             <p>Experience the booking workspace in real-time. Direct channels, secure logs, native video rooms.</p>
           </div>
 
-          {/* Interactive showcase card layout */}
           <div className="auth-showcase-container">
-            {/* Widget 1: Creator Profile Card */}
             <div className="showcase-card expert-card float-1">
               <div className="card-header-mini">
                 <div className="avatar-circle-mini">💻</div>
@@ -112,7 +108,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Widget 2: Booking slot picker preview */}
             <div className="showcase-card booking-picker-card float-2">
               <div className="card-sec-title">Availability Slots</div>
               <div className="slots-strip-mini">
@@ -131,7 +126,6 @@ export default function RegisterPage() {
               </button>
             </div>
 
-            {/* Widget 3: Live countdown card */}
             <div className="showcase-card upcoming-card float-3">
               <div className="upcoming-top">
                 <span className="live-status-pill-mini">UPCOMING SESSION</span>
@@ -143,7 +137,6 @@ export default function RegisterPage() {
               <p>with Marcus Sterling (Y-Combinator)</p>
             </div>
 
-            {/* Widget 4: Stream activity alerts */}
             <div className="showcase-card activity-feed-card">
               <div className="card-sec-title">Activity Stream</div>
               <div className="feed-item-mini">
@@ -156,7 +149,6 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Widget 5: Dashboard preview analytics */}
             <div className="showcase-card dashboard-preview-card">
               <div className="mini-metric-col">
                 <span>Active Bookings</span>
@@ -171,7 +163,6 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* ── Right form panel ── */}
       <div className="auth-right">
         <div className="auth-form-wrapper">
           <div className="auth-form-header">
@@ -179,7 +170,6 @@ export default function RegisterPage() {
             <p>Fill in your details to get started</p>
           </div>
 
-          {/* Google OAuth */}
           <a href={GOOGLE_OAUTH_URL} className="google-btn">
             <GoogleIcon />
             Sign up with Google
