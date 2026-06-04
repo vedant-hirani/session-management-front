@@ -1313,3 +1313,45 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 480px) {
+  .landing-navbar {
+    padding: 10px 12px;
+  }
+  
+  .navbar-container {
+    gap: 8px;
+  }
+
+  .navbar-logo {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    font-size: 0.95rem;
+  }
+
+  .navbar-actions {
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .nav-btn-signin {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav-btn-register {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
