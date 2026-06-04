@@ -196,11 +196,32 @@ export default function RegisterPage() {
             <Input label="Confirm Password" type="password" name="password2" value={formData.password2} onChange={handleChange} error={formErrors.password2} placeholder="Re-enter password" disabled={isLoading} autoComplete="new-password" />
 
             <div className="role-select-wrapper">
-              <label htmlFor="role">Account Type</label>
-              <select id="role" name="role" value={formData.role} onChange={handleChange} disabled={isLoading} className="role-select">
-                <option value="user">👤 User — browse &amp; book sessions</option>
-                <option value="creator">🎙 Creator — host &amp; manage sessions</option>
-              </select>
+              <label className="role-select-label">Choose Account Type</label>
+              <div className="role-cards-container">
+                <div
+                  className={`role-card-v2 ${formData.role === 'user' ? 'active' : ''}`}
+                  onClick={() => !isLoading && setFormData((prev) => ({ ...prev, role: 'user' }))}
+                >
+                  <div className="role-card-icon-v2">👤</div>
+                  <div className="role-card-info-v2">
+                    <span className="role-card-title-v2">Explore &amp; Book</span>
+                    <p className="role-card-description-v2">Join as User to browse and book 1:1 sessions.</p>
+                  </div>
+                  {formData.role === 'user' && <span className="role-card-checkmark">✓</span>}
+                </div>
+
+                <div
+                  className={`role-card-v2 ${formData.role === 'creator' ? 'active' : ''}`}
+                  onClick={() => !isLoading && setFormData((prev) => ({ ...prev, role: 'creator' }))}
+                >
+                  <div className="role-card-icon-v2">🎙</div>
+                  <div className="role-card-info-v2">
+                    <span className="role-card-title-v2">Host &amp; Earn</span>
+                    <p className="role-card-description-v2">Join as Creator to host and manage live sessions.</p>
+                  </div>
+                  {formData.role === 'creator' && <span className="role-card-checkmark">✓</span>}
+                </div>
+              </div>
             </div>
 
             <button type="submit" className="auth-submit-btn" disabled={isLoading}>
