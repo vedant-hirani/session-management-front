@@ -92,3 +92,36 @@
     min-width: 110px;
   }
 }
+
+@media (max-width: 768px) {
+  .premium-sessions-filter-bar {
+    padding: 12px;
+    gap: 12px;
+    border-radius: 12px;
+  }
+
+  .filter-selects-group-v2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+    flex: none;
+  }
+
+  .select-wrapper-v2 {
+    width: 100%;
+  }
+
+  .filter-dropdown-v2 {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .btn-clear-filters-v2 {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0;
+  }
+}
