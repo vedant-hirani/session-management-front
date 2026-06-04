@@ -4,13 +4,13 @@ A modern, production-ready React frontend for a sessions marketplace platform. B
 
 ## Features
 
-- **Authentication System**: Complete JWT-based authentication with automatic token refresh
-- **Session Management**: Browse, search, and book sessions
-- **User Dashboard**: View bookings and manage profile
-- **Creator Dashboard**: Manage sessions and view bookings for your sessions
-- **Role Switching**: Users can switch between creator and user roles
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Professional UI**: Modern, clean design with consistent styling
+- **Premium Sessions Marketplace Catalog**: Immersive discovery home with real-time keyword search, active price range selects, session duration filters, newest/pricing sort ordering, and one-click clear options.
+- **Asymmetric Session Details Layout**: High-end two-column detail view featuring custom learn outcomes agendas, agenda timelines, detailed host professional stats, and participant reviews.
+- **Robust Authentication System**: Full JWT token handling (access/refresh) with automatic silent refreshes on 401 intercepts, and Google/GitHub OAuth integrations.
+- **Interactive Signup Role Cards**: Replaces boring select dropdowns with custom animated cards ("Explore & Book" vs "Host & Earn") complete with active visual checkmarks, hover transforms, and highlight rings.
+- **100% Mobile Responsive Sidebar**: Overlay navigation drawer using modern dynamic viewport parameters (`100dvh`) to guarantee the footer Logout CTA button remains visible and above the fold across all iOS/Android browser address bars.
+- **Creator & User Dashboards**: Complete overview cards, bookings timelines, slot configurations, and real-time validation forms.
+- **Role Switching**: On-the-fly switching between Creator and User accounts with synchronized sidebar options.
 
 ## Tech Stack
 
