@@ -422,6 +422,22 @@
   }
 }
 
+@media (max-width: 768px) {
+  .auth-left {
+    display: none;
+  }
+
+  .auth-right {
+    flex: 1;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 600px) {
   .auth-showcase-container {
     grid-template-columns: 1fr;
